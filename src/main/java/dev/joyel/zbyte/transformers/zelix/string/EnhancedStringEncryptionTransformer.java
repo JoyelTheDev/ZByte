@@ -16,7 +16,7 @@
 
 package dev.joyel.zbyte.transformers.zelix.string;
 
-import tools.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.*;
 import com.google.common.base.*;
 import dev.joyel.zbyte.config.*;
 import dev.joyel.zbyte.exceptions.*;

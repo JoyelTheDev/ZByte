@@ -16,7 +16,7 @@
 
 package dev.joyel.zbyte.config;
 
-import tools.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.*;
 
 import java.io.*;
 import java.util.*;

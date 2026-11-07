@@ -16,7 +16,7 @@
 
 package dev.joyel.zbyte.transformers.normalizer;
 
-import tools.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.joyel.zbyte.config.TransformerConfig;
 import org.objectweb.asm.commons.ClassRemapper;
 import org.objectweb.asm.tree.ClassNode;
