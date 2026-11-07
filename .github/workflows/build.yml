@@ -93,7 +93,7 @@ jobs:
         with:
           files: ${{ steps.package.outputs.jar }}
           tag_name: v${{ steps.meta.outputs.next_number }}
-          name: DeByte Build ${{ steps.meta.outputs.next_number }}
+          name: ZByte Build ${{ steps.meta.outputs.next_number }}
           body_path: CHANGELOG.md
           target_commitish: ${{ github.sha }}
           overwrite_files: true
