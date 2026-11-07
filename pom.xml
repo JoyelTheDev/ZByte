@@ -1,13 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.javadeobfuscator</groupId>
-    <artifactId>deobfuscator</artifactId>
+    <groupId>dev.joyel</groupId>
+    <artifactId>debyte</artifactId>
     <version>1.0.0</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.asm>9.5</version.asm>
-        <version.dude>1.10.2</version.dude>
+        <version.asm>9.11.1</version.asm>
+        <version.dude>2.6.7</version.dude>
+        <maven.compiler.release>25</maven.compiler.release>
     </properties>
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
@@ -29,20 +30,23 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <version>3.16.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <compilerArgs>
-                        <arg>-XDignore.symbol.file</arg>
-                    </compilerArgs>
-                    <fork>true</fork>
+                    <release>25</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <argLine>-Xss512m</argLine>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.6.2</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -50,17 +54,12 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <minimizeJar>true</minimizeJar>
                             <artifactSet>
                                 <includes>
                                     <include>*:*</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
-                                <!--<relocation>
-                                    <pattern>org.objectweb.asm</pattern>
-                                    <shadedPattern>com.javadeobfuscator.org.objectweb.asm</shadedPattern>
-                                </relocation>-->
                             </relocations>
                         </configuration>
                     </execution>
@@ -69,11 +68,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.5.1</version>
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.javadeobfuscator.deobfuscator.DeobfuscatorMain</mainClass>
+                            <mainClass>dev.joyel.debyte.DeobfuscatorMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -81,10 +80,6 @@
         </plugins>
     </build>
     <repositories>
-        <repository>
-            <id>java-deobfuscator-repository</id>
-            <url>https://repo.samczsun.com/repository/java-deobfuscator</url>
-        </repository>
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
@@ -95,72 +90,74 @@
         <dependency>
             <groupId>commons-cli</groupId>
             <artifactId>commons-cli</artifactId>
-            <version>1.5.0</version>
+            <version>1.11.0</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
+            <version>2.22.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.1-jre</version>
+            <version>33.8.0-jre</version>
         </dependency>
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jool</artifactId>
-            <version>0.9.9</version>
+            <version>0.9.16</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.9.0</version>
+            <version>2.15.0</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
+            <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.13.4</version>
+            <version>3.2.4</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
+            <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.4.1</version>
+            <version>3.2.4</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <groupId>tools.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>2.13.4</version>
+            <version>3.2.4</version>
         </dependency>
-        <!-- override vulnerable version in transitive dependency in jackson-dataformat-yaml -->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.32</version>
+            <version>2.7</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.8.0-beta4</version>
+            <version>2.0.20</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.8.0-beta4</version>
+            <version>2.0.20</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>6.1.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>26.1.0</version>
         </dependency>
-
-        <!-- ASM related dependencies -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.1.0-M1</version>
+        </dependency>
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
@@ -186,17 +183,14 @@
             <artifactId>asm-analysis</artifactId>
             <version>${version.asm}</version>
         </dependency>
-
-        <!-- needs to be very late in the pom as it got a bunch of old stuff shaded inside -->
         <dependency>
-            <groupId>com.javadeobfuscator</groupId>
+            <groupId>com.github.java-deobfuscator</groupId>
             <artifactId>javavm</artifactId>
-            <version>3.0.0</version>
+            <version>12e219644f</version>
         </dependency>
-
         <dependency>
-            <groupId>com.github.Col-E</groupId>
-            <artifactId>CAFED00D</artifactId>
+            <groupId>software.coley</groupId>
+            <artifactId>cafedude-core</artifactId>
             <version>${version.dude}</version>
         </dependency>
     </dependencies>
