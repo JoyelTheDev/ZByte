@@ -16,9 +16,9 @@
 
 package dev.joyel.zbyte;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.module.SimpleModule;
+import tools.jackson.dataformat.yaml.YAMLFactory;
 import dev.joyel.zbyte.config.Configuration;
 import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.config.TransformerConfigDeserializer;

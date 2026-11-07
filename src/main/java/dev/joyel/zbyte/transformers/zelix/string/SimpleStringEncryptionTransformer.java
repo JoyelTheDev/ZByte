@@ -16,7 +16,7 @@
 
 package dev.joyel.zbyte.transformers.zelix.string;
 
-import com.fasterxml.jackson.annotation.*;
+import tools.jackson.annotation.*;
 import dev.joyel.zbyte.config.*;
 import dev.joyel.zbyte.exceptions.*;
 import dev.joyel.zbyte.matcher.*;
@@ -36,31 +36,7 @@ import org.objectweb.asm.tree.analysis.Frame;
 import java.util.*;
 import java.util.function.*;
 
-/**
- * This is a transformer for the simplest version of Zelix string encryption. There are a few possible obfuscated outcomes:
- * <p>
- * If:
- * strings outside <clinit>: multiple
- * strings inside <clinit>: none/single/multiple
- * then a {@code private(?) static final(?) java.lang.String[]} will be created
- * <p>
- * If:
- * strings outside <clinit>: single
- * strings inside <clinit>: none/single/multiple
- * then a {@code private(?) static final(?) java.lang.String} will be created
- * <p>
- * If:
- * strings outside <clinit>: none
- * strings inside <clinit>: single/multiple
- * then a local {@code java.lang.String[]} or {@code java.lang.String} will be created. No fields are created
- * <p>
- * A decryption block can be identified by a switch statement which resets a handful of variables before
- * jumping back to the decryption loop (think flattened CFG). Note that sometimes, there may be multiple decryption blocks
- * That is to say, after the case of the first decryption block, there is another decryption block
- * <p>
- * Also note that sometimes local variables may be initialized between decryption. The VM may not be able to handle such cases,
- * so you may have to instruct the VM to ignore such methods through {@link TransformerConfig#setVmModifiers(List)}
- */
+
 @TransformerConfig.ConfigOptions(configClass = SimpleStringEncryptionTransformer.Config.class)
 public class SimpleStringEncryptionTransformer extends Transformer<SimpleStringEncryptionTransformer.Config> implements Opcodes {
     private static final InstructionPattern DECRYPT_PATTERN = new InstructionPattern(

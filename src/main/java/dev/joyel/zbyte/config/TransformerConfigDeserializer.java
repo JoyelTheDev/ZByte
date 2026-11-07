@@ -16,11 +16,11 @@
 
 package dev.joyel.zbyte.config;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.*;
+import tools.jackson.core.JsonFactory;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonProcessingException;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.*;
 import dev.joyel.zbyte.transformers.DelegatingTransformer;
 import dev.joyel.zbyte.transformers.Transformer;
 import org.slf4j.Logger;
