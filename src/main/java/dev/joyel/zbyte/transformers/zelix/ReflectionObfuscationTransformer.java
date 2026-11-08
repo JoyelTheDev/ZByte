@@ -93,16 +93,14 @@ public class ReflectionObfuscationTransformer extends Transformer<ReflectionObfu
 
     @Override
     public boolean transform() throws Throwable {
-        System.out.println("[Zelix] [ReflectionObfuscationTransformer] Starting");
-        System.out.println("[Zelix] [ReflectionObfuscationTransformer] Finding reflection obfuscation");
+        logger.info("Finding reflection obfuscation");
         int count = findReflectionObfuscation();
-        System.out.println("[Zelix] [ReflectionObfuscationTransformer] Found " + count + " reflection obfuscation instructions");
+        logger.info("Found {} reflection obfuscation instructions", count);
         int amount = 0;
         if (count > 0) {
             amount = inlineReflection(count);
-            System.out.println("[Zelix] [ReflectionObfuscationTransformer] Inlined " + amount + " reflection obfuscation instructions");
+            logger.info("Inlined {} reflection obfuscation instructions", amount);
         }
-        System.out.println("[Zelix] [ReflectionObfuscationTransformer] Done");
         return amount > 0;
     }
 
@@ -277,8 +275,7 @@ public class ReflectionObfuscationTransformer extends Transformer<ReflectionObfu
                                     	MethodExecutor.execute(innerClassNode, method1, Collections.emptyList(), null, context);
                                 }catch(Throwable t) 
     							{
-                                    System.out.println("Error while fully initializing " + classNode.name);
-                                    t.printStackTrace(System.out);
+                                    logger.error("Error while fully initializing {}", classNode.name, t);
                                 }
                             }
                             MethodNode decrypterNode = innerClassNode.methods.stream().filter(mn -> mn.name.equals(methodInsnNode.name) && mn.desc.equals(methodInsnNode.desc)).findFirst().orElse(null);
@@ -289,7 +286,7 @@ public class ReflectionObfuscationTransformer extends Transformer<ReflectionObfu
 								javaMethod = MethodExecutor.execute(innerClassNode, decrypterNode, Arrays.asList(new JavaLong(ldc)), null, ctx);
 							} catch (Exception ex) {
                             	if (!(ex instanceof NoClassInPathException)) {
-                            		ex.printStackTrace();
+                            		logger.error("Failed to decrypt reflection method", ex);
 								}
                             	continue;
 							}
@@ -384,7 +381,7 @@ public class ReflectionObfuscationTransformer extends Transformer<ReflectionObfu
                             count.incrementAndGet();
                             int x = (int) ((count.get() * 1.0d / expected) * 100);
                             if (x != 0 && x % 10 == 0 && !alerted[x - 1]) {
-                                System.out.println("[Zelix] [ReflectionObfucationTransformer] Done " + x + "%");
+                                logger.info("Done {}%", x);
                                 alerted[x - 1] = true;
                             }
                         } else if (methodInsnNode.desc.equals("(J)Ljava/lang/reflect/Field;")) {
@@ -480,8 +477,7 @@ public class ReflectionObfuscationTransformer extends Transformer<ReflectionObfu
                                     	MethodExecutor.execute(innerClassNode, method1, Collections.emptyList(), null, context);
                                 }catch(Throwable t) 
     							{
-                                    System.out.println("Error while fully initializing " + classNode.name);
-                                    t.printStackTrace(System.out);
+                                    logger.error("Error while fully initializing {}", classNode.name, t);
                                 }
                             }
                             MethodNode decrypterNode = innerClassNode.methods.stream().filter(mn -> mn.name.equals(methodInsnNode.name) && mn.desc.equals(methodInsnNode.desc)).findFirst().orElse(null);
@@ -491,7 +487,7 @@ public class ReflectionObfuscationTransformer extends Transformer<ReflectionObfu
                             try {
 								javaField = MethodExecutor.execute(innerClassNode, decrypterNode, Collections.singletonList(new JavaLong(ldc)), null, ctx);
 							} catch (Exception ex) {
-                            	ex.printStackTrace();
+                            	logger.error("Failed to decrypt reflection field", ex);
                             	continue;
 							}
 							if(!fieldReflectionMethod.containsKey(innerClassNode))
@@ -538,7 +534,7 @@ public class ReflectionObfuscationTransformer extends Transformer<ReflectionObfu
                             count.incrementAndGet();
                             int x = (int) ((count.get() * 1.0d / expected) * 100);
                             if (x != 0 && x % 10 == 0 && !alerted[x - 1]) {
-                                System.out.println("[Zelix] [ReflectionObfucationTransformer] Done " + x + "%");
+                                logger.info("Done {}%", x);
                                 alerted[x - 1] = true;
                             }
                         }
@@ -659,8 +655,7 @@ public class ReflectionObfuscationTransformer extends Transformer<ReflectionObfu
                                     	MethodExecutor.execute(innerClassNode, method1, Collections.emptyList(), null, context);
                                 }catch(Throwable t) 
     							{
-                                    System.out.println("Error while fully initializing " + classNode.name);
-                                    t.printStackTrace(System.out);
+                                    logger.error("Error while fully initializing {}", classNode.name, t);
                                 }
                             }
                             MethodNode indyNode = innerClassNode.methods.stream().filter(mn -> mn.name.equals(invokeDynamicInsnNode.bsm.getName()) 
@@ -751,7 +746,7 @@ public class ReflectionObfuscationTransformer extends Transformer<ReflectionObfu
                             count.incrementAndGet();
                             int x = (int) ((count.get() * 1.0d / expected) * 100);
                             if (x != 0 && x % 10 == 0 && !alerted[x - 1]) {
-                                System.out.println("[Zelix] [ReflectionObfucationTransformer] Done " + x + "%");
+                                logger.info("Done {}%", x);
                                 alerted[x - 1] = true;
                             }
                         }

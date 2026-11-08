@@ -110,7 +110,6 @@ public class StringEncryptionTransformer extends Transformer<StringEncryptionTra
 		context.dictionary = classes;
 		AtomicInteger encClasses = new AtomicInteger();
 		AtomicInteger encStrings = new AtomicInteger();
-		System.out.println("[Zelix] [StringEncryptionTransformer] Starting");
 		classNodes().forEach(classNode -> {
 			MethodNode clinit = classNode.methods.stream().filter(m -> m.name.equals("<clinit>")).findFirst().orElse(null);
 			if(clinit != null && (includeOnly == null || includeOnly.contains(classNode.name)))
@@ -988,10 +987,7 @@ public class StringEncryptionTransformer extends Transformer<StringEncryptionTra
 																	AbstractInsnNode a3 = f.getStack(f.getStackSize() - 1).insns.iterator().next();
 									        						if(!Utils.isInteger(a3))
 									        						{
-									        							System.out
-									        							.println("[Zelix] [StringEncryptionTransformer] Warning: Unable to decrypt string"
-									        								+ " at method " + method.name + method.desc + " from class " + classNode.name
-									        								+ ". Other arguments: " + Utils.getIntValue(a1) + " " + Utils.getIntValue(a2));
+									        							logger.warn("Unable to decrypt string at method {}{} from class {}. Other arguments: {} {}", method.name, method.desc, classNode.name, Utils.getIntValue(a1), Utils.getIntValue(a2));
 									        							continue;
 									        						}
 																	int args1 = Utils.getIntValue(a1);
@@ -1959,9 +1955,8 @@ public class StringEncryptionTransformer extends Transformer<StringEncryptionTra
 				}
 			}
 		});
-		System.out.println("[Zelix] [StringEncryptionTransformer] Decrypted strings from " + encClasses.get() + " encrypted classes");
-		System.out.println("[Zelix] [StringEncryptionTransformer] Decrypted " + encStrings.get() + " strings");
-		System.out.println("[Zelix] [StringEncryptionTransformer] Done");
+		logger.info("Decrypted strings from {} encrypted classes", encClasses.get());
+		logger.info("Decrypted {} strings", encStrings.get());
 		return encStrings.get() > 0;
 	}
 	

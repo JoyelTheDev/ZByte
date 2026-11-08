@@ -10,7 +10,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class FlowObfuscationTransformer extends Transformer<TransformerConfig> {
     @Override
     public boolean transform() throws Throwable {
-        System.out.println("[Zelix] [FlowObfuscationTransformer] Starting");
         AtomicInteger counter = new AtomicInteger();
 
         classNodes().forEach(classNode -> {
@@ -21,8 +20,7 @@ public class FlowObfuscationTransformer extends Transformer<TransformerConfig> {
             });
         });
 
-        System.out.println("[Zelix] [FlowObfuscationTransformer] Removed " + counter.get() + " fake try-catch blocks");
-        System.out.println("[Zelix] [FlowObfuscationTransformer] Done");
+        logger.info("Removed {} fake try-catch blocks", counter.get());
         return true;
     }
 }
