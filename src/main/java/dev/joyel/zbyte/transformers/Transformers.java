@@ -100,5 +100,14 @@ public class Transformers {
         public static final Class<? extends Transformer> CYCLE_CLASS_REMOVING = dev.joyel.zbyte.transformers.universal.CycleClassRemovingTransformer.class;
         public static final Class<? extends Transformer> UNUSED_METHOD_REMOVER = dev.joyel.zbyte.transformers.universal.UnusedMethodRemoverTransformer.class;
         public static final Class<? extends Transformer> ENUM_NAME_RESTORATION = dev.joyel.zbyte.transformers.universal.EnumNameRestorationTransformer.class;
+        public static final Class<? extends Transformer> OPAQUE_CONSTANT_FOLDING = dev.joyel.zbyte.transformers.universal.OpaqueConstantFoldingTransformer.class;
+        public static final Class<? extends Transformer> OPAQUE_PREDICATE_FOLDING = dev.joyel.zbyte.transformers.universal.OpaquePredicateFoldingTransformer.class;
+        public static final Class<? extends Transformer> VARIABLE_FOLDING = dev.joyel.zbyte.transformers.universal.VariableFoldingTransformer.class;
+        public static final Class<? extends Transformer> STATIC_VALUE_COLLECTION = dev.joyel.zbyte.transformers.universal.StaticValueCollectionTransformer.class;
+        public static final Class<? extends Transformer> STATIC_VALUE_INLINING = dev.joyel.zbyte.transformers.universal.StaticValueInliningTransformer.class;
+        public static final Class<? extends Transformer> REDUNDANT_TRY_CATCH_REMOVING = dev.joyel.zbyte.transformers.universal.RedundantTryCatchRemovingTransformer.class;
+        public static final Class<? extends Transformer> EXCEPTION_COLLECTION = dev.joyel.zbyte.transformers.universal.ExceptionCollectionTransformer.class;
+        public static final Class<? extends Transformer> REFLECTION_RESOLVER = dev.joyel.zbyte.transformers.universal.ReflectionResolverTransformer.class;
+        public static final Class<? extends Transformer> REFLECTION_RESOLVER_WIDEN = dev.joyel.zbyte.transformers.universal.ReflectionResolverWidenTransformer.class;
     }
 }
