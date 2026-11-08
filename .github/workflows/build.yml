@@ -55,7 +55,7 @@ jobs:
             exit 1
           fi
 
-          JAR_NAME="deobfuscator-${NEXT_NUM}.jar"
+          JAR_NAME="zbyte-${NEXT_NUM}.jar"
           cp "$SRC_JAR" "$JAR_NAME"
 
           echo "jar=$JAR_NAME" >> "$GITHUB_OUTPUT"

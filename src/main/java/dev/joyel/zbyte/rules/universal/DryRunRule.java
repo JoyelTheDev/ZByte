@@ -1,6 +1,6 @@
 package dev.joyel.zbyte.rules.universal;
 
-import dev.joyel.zbyte.Deobfuscator;
+import dev.joyel.zbyte.ZByte;
 import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.rules.Rule;
 import dev.joyel.zbyte.transformers.Transformer;
@@ -19,7 +19,6 @@ import java.util.Map;
 public abstract class DryRunRule implements Rule {
 
     protected abstract Class<? extends Transformer<?>> probe();
-
     protected abstract String describeFinding();
 
     protected int minimumChanges() {
@@ -36,7 +35,7 @@ public abstract class DryRunRule implements Rule {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         Map<String, ClassNode> originals = deobfuscator.getClasses();
         Map<String, ClassNode> copies = new LinkedHashMap<>();
         for (Map.Entry<String, ClassNode> entry : originals.entrySet()) {
@@ -69,7 +68,7 @@ public abstract class DryRunRule implements Rule {
         if (changes < minimumChanges()) {
             return null;
         }
-        return describeFinding() + " in " + changes + " class(es), first in " + first;
+        return describeFinding() + " in " + changes + " classes, first in " + first;
     }
 
     private static String firstDifference(ClassNode before, ClassNode after) {
