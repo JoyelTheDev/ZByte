@@ -17,6 +17,17 @@ import java.util.Map;
 
 public class TransformerConfigDeserializer extends ValueDeserializer<TransformerConfig> {
 
+    private static final String[] SHORT_NAME_PACKAGES = {
+            "universal.",
+            "general.",
+            "special."
+            "general.peephole.",
+            "general.removers.",
+            "normalizer.",
+            "zelix."
+            
+    };
+
     private final Logger logger;
     private final ObjectMapper updater = JsonMapper.builder().build();
 
@@ -62,6 +73,12 @@ public class TransformerConfigDeserializer extends ValueDeserializer<Transformer
         if (clazz == null) {
             try {
                 clazz = Class.forName(id);
+            } catch (ClassNotFoundException ignored) {
+            }
+        }
+        for (int i = 0; clazz == null && i < SHORT_NAME_PACKAGES.length; i++) {
+            try {
+                clazz = Class.forName("dev.joyel.zbyte.transformers." + SHORT_NAME_PACKAGES[i] + id);
             } catch (ClassNotFoundException ignored) {
             }
         }
