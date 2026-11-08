@@ -1,43 +1,40 @@
 package dev.joyel.zbyte.config;
 
-import tools.jackson.core.JsonFactory;
 import tools.jackson.core.JsonParser;
-import tools.jackson.core.JsonProcessingException;
 import tools.jackson.core.JsonToken;
-import tools.jackson.databind.*;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.json.JsonMapper;
 import dev.joyel.zbyte.transformers.DelegatingTransformer;
 import dev.joyel.zbyte.transformers.Transformer;
 import org.slf4j.Logger;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class TransformerConfigDeserializer extends JsonDeserializer<TransformerConfig> {
+public class TransformerConfigDeserializer extends ValueDeserializer<TransformerConfig> {
 
-    private Logger logger;
+    private final Logger logger;
+    private final ObjectMapper updater = JsonMapper.builder().build();
 
     public TransformerConfigDeserializer(Logger logger) {
         this.logger = logger;
     }
 
     @Override
-    public TransformerConfig deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-        JsonNode node = p.getCodec().readTree(p);
+    public TransformerConfig deserialize(JsonParser p, DeserializationContext ctxt) {
+        JsonNode node = ctxt.readTree(p);
 
         if (node.isObject()) {
             List<TransformerConfig> configs = new ArrayList<>();
 
-            for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext(); ) {
-                Map.Entry<String, JsonNode> field = it.next();
-
+            for (Map.Entry<String, JsonNode> field : node.properties()) {
                 TransformerConfig config = getById(p, ctxt, field.getKey());
 
-                // todo is there a better way to do this other than making a new ObjectMapper?
-                ObjectMapper mapper = new ObjectMapper(new JsonFactory());
-                configs.add(mapper.readerForUpdating(config).readValue(field.getValue()));
+                configs.add(updater.readerForUpdating(config).readValue(field.getValue()));
             }
 
             if (configs.size() == 0) {
@@ -56,7 +53,7 @@ public class TransformerConfigDeserializer extends JsonDeserializer<TransformerC
         }
     }
 
-    private TransformerConfig getById(JsonParser p, DeserializationContext ctxt, String id) throws JsonMappingException {
+    private TransformerConfig getById(JsonParser p, DeserializationContext ctxt, String id) {
         Class<?> clazz = null;
         try {
             clazz = Class.forName("dev.joyel.zbyte.transformers." + id);

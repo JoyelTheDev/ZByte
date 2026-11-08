@@ -16,9 +16,10 @@
 
 package dev.joyel.zbyte;
 
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.module.SimpleModule;
-import tools.jackson.dataformat.yaml.YAMLFactory;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 import dev.joyel.zbyte.config.Configuration;
 import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.config.TransformerConfigDeserializer;
@@ -29,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 
 public class DeobfuscatorMain {
     public static void main(String[] args) throws ClassNotFoundException {
@@ -56,15 +56,16 @@ public class DeobfuscatorMain {
             return 2;
         }
 
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
-                .registerModule(
+        ObjectMapper mapper = YAMLMapper.builder()
+                .addModule(
                         new SimpleModule().addDeserializer(TransformerConfig.class, new TransformerConfigDeserializer(logger))
-                );
+                )
+                .build();
 
         Configuration configuration;
         try {
             configuration = mapper.readValue(new File(cmdLine.getOptionValue("config")), Configuration.class);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             logger.error("An error occurred while parsing the configuration file", e);
             return 3;
         }

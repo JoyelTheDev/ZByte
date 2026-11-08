@@ -47,7 +47,7 @@ jobs:
         env:
           NEXT_NUM: ${{ steps.meta.outputs.next_number }}
         run: |
-          SRC_JAR=$(ls target/debyte-*.jar | grep -v '^target/original-' | head -n1)
+          SRC_JAR=$(ls target/zbyte-*.jar | grep -v '^target/original-' | head -n1)
 
           if [ -z "$SRC_JAR" ] || [ ! -f "$SRC_JAR" ]; then
             echo "::error::Shaded jar not found"

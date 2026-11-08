@@ -16,7 +16,7 @@
 
 package dev.joyel.zbyte.transformers.stringer.v3;
 
-import com.fasterxml.jackson.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.transformers.Transformer;
 import dev.joyel.zbyte.transformers.stringer.v3.utils.HideAccessClassFinder;
