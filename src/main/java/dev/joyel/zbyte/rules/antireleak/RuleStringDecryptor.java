@@ -3,7 +3,7 @@ package dev.joyel.zbyte.rules.antireleak;
 import java.util.Collection;
 import java.util.Collections;
 
-import dev.joyel.zbyte.Deobfuscator;
+import dev.joyel.zbyte.ZByte;
 import dev.joyel.zbyte.rules.Rule;
 import dev.joyel.zbyte.transformers.Transformer;
 import dev.joyel.zbyte.transformers.antireleak.StringEncryptionTransformer;
@@ -21,7 +21,7 @@ public class RuleStringDecryptor implements Rule {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         for (ClassNode classNode : deobfuscator.getClasses().values()) {
             for (MethodNode methodNode : classNode.methods) {
                 boolean type2Possible1 = false;

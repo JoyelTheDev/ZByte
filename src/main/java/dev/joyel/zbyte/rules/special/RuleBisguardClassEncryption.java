@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import dev.joyel.zbyte.Deobfuscator;
+import dev.joyel.zbyte.ZByte;
 import dev.joyel.zbyte.rules.Rule;
 import dev.joyel.zbyte.transformers.Transformer;
 import dev.joyel.zbyte.transformers.special.BisGuardTransformer;
@@ -28,7 +28,7 @@ public class RuleBisguardClassEncryption implements Rule {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         int count = 0;
         for (ClassNode classNode : deobfuscator.getClasses().values()) {
             if (classNames.contains(classNode.name.toLowerCase(Locale.ROOT))) {

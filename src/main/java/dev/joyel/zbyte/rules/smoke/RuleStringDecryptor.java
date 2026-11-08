@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import dev.joyel.zbyte.Deobfuscator;
+import dev.joyel.zbyte.ZByte;
 import dev.joyel.zbyte.rules.Rule;
 import dev.joyel.zbyte.transformers.Transformer;
 import dev.joyel.zbyte.transformers.smoke.StringEncryptionTransformer;
@@ -27,7 +27,7 @@ public class RuleStringDecryptor implements Rule {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         Map<String, ClassNode> classes = deobfuscator.getClasses();
         for (ClassNode classNode : classes.values()) {
             for (MethodNode method : classNode.methods) {

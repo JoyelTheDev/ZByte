@@ -45,3 +45,30 @@ transformers:
   - normalizer.ClassNormalizer: {}
     normalizer.FieldNormalizer: {}
 ```
+
+### Sandbox
+
+Obfuscated code is emulated while transformers decrypt strings and resolve flow. The sandbox blocks dangerous host operations during that emulation and caps runaway execution. It is enabled by default and configured in `config.yaml`:
+
+```yaml
+sandbox:
+  enabled: true
+  logOnly: false
+  maxInstructions: 500000000
+  timeoutMillis: 60000
+  allow:
+    - java/io/File.delete
+  deny:
+    - com/example/
+```
+
+| Option | Description |
+| --- | --- |
+| enabled | Turns the sandbox on or off |
+| logOnly | Records violations in the log without blocking them |
+| maxInstructions | Instruction budget per execution context, 0 disables the limit |
+| timeoutMillis | Wall clock limit per execution context, 0 disables the limit |
+| allow | Rules that override the built-in deny list |
+| deny | Extra rules added to the built-in deny list |
+
+A rule ending in `/` matches a package prefix, `owner` matches a class, and `owner.method` matches one method (`owner.*` matches all methods). Built-in rules block process execution, networking, file writes and deletes, `System.exit`, native loading, class definition, reflection internals and `sun.misc.Unsafe`. A summary of blocked operations is logged after the transformers finish.

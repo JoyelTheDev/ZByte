@@ -32,7 +32,7 @@ public class RuleSuspiciousClinit implements Rule, Opcodes {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         for (ClassNode classNode : deobfuscator.getClasses().values()) {
             MethodNode clinit = TransformerHelper.findClinit(classNode);
             if (clinit == null || clinit.instructions == null) {

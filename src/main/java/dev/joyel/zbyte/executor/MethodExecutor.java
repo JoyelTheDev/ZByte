@@ -373,6 +373,7 @@ public class MethodExecutor {
                     throw new FallingOffCodeException();
                 }
 
+                context.meter.tick();
                 context.doBreakpoint(now, true, stack, locals, null);
 
                 Throwable toThrow = null;

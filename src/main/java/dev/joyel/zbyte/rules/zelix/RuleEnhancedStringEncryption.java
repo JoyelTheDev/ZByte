@@ -37,7 +37,7 @@ public class RuleEnhancedStringEncryption implements Rule, Opcodes {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         if (new RuleSuspiciousClinit().test(deobfuscator) == null) {
             return null;
         }

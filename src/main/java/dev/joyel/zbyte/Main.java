@@ -31,13 +31,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-public class DeobfuscatorMain {
+public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
         System.exit(run(args));
     }
 
     public static int run(String[] args) throws ClassNotFoundException {
-        Logger logger = LoggerFactory.getLogger(DeobfuscatorMain.class);
+        Logger logger = LoggerFactory.getLogger(Main.class);
 
         Options options = new Options();
         options.addOption("c", "config", true, "The configuration file to use");
@@ -101,7 +101,7 @@ public class DeobfuscatorMain {
     }
 
     private static int run(Configuration configuration) {
-        Deobfuscator deobfuscator = new Deobfuscator(configuration);
+        ZByte deobfuscator = new ZByte(configuration);
 
         try {
             deobfuscator.start();

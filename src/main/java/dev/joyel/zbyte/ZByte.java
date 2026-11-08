@@ -34,6 +34,7 @@ import dev.joyel.zbyte.asm.ConstantPool;
 import dev.joyel.zbyte.config.Configuration;
 import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.exceptions.NoClassInPathException;
+import dev.joyel.zbyte.executor.sandbox.SandboxPolicy;
 import dev.joyel.zbyte.rules.Rule;
 import dev.joyel.zbyte.rules.Rules;
 import dev.joyel.zbyte.transformers.Transformer;
@@ -57,11 +58,11 @@ import org.objectweb.asm.util.CheckClassAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Deobfuscator {
+public class ZByte {
 
     private static final boolean DEBUG = false;
 
-    private final Logger logger = LoggerFactory.getLogger(Deobfuscator.class);
+    private final Logger logger = LoggerFactory.getLogger(ZByte.class);
 
     private final Configuration configuration;
 
@@ -83,7 +84,7 @@ public class Deobfuscator {
     public Map<String, byte[]> invalidClasses = new HashMap<>();
     public List<String> junkFiles = new ArrayList<>();
 
-    public Deobfuscator(Configuration configuration) {
+    public ZByte(Configuration configuration) {
         this.configuration = configuration;
     }
 
@@ -371,6 +372,8 @@ public class Deobfuscator {
     }
 
     public void start() throws Throwable {
+        SandboxPolicy.install(configuration.getSandbox().toPolicy());
+
         logger.info("Loading classpath");
         loadClasspath();
 
@@ -434,6 +437,7 @@ public class Deobfuscator {
                 runFromConfig(config);
             }
         }
+        SandboxPolicy.logSummary();
 
         logger.info("Writing");
         if (DEBUG) {

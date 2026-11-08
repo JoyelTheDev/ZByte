@@ -19,7 +19,7 @@ package dev.joyel.zbyte.transformers;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import dev.joyel.zbyte.Deobfuscator;
+import dev.joyel.zbyte.ZByte;
 import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.exceptions.*;
 import com.javadeobfuscator.javavm.*;
@@ -36,12 +36,12 @@ public abstract class Transformer<T extends TransformerConfig> implements Opcode
     protected Map<String, ClassNode> classpath;
     protected Map<ClassNode, ClassReader> readers;
 
-    private Deobfuscator deobfuscator;
+    private ZByte deobfuscator;
     private T config;
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void init(Deobfuscator deobfuscator, TransformerConfig config, Map<String, ClassNode> classes, Map<String, ClassNode> classpath, Map<ClassNode, ClassReader> readers) {
+    public void init(ZByte deobfuscator, TransformerConfig config, Map<String, ClassNode> classes, Map<String, ClassNode> classpath, Map<ClassNode, ClassReader> readers) {
         this.deobfuscator = deobfuscator;
         this.classes = classes;
         this.classpath = classpath;
@@ -63,7 +63,7 @@ public abstract class Transformer<T extends TransformerConfig> implements Opcode
      */
     public abstract boolean transform() throws Throwable, WrongTransformerException; // Throwable will be removed soon
 
-    public Deobfuscator getDeobfuscator() {
+    public ZByte getDeobfuscator() {
         return this.deobfuscator;
     }
 

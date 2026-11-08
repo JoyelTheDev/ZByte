@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 
 import com.google.common.base.Joiner;
-import dev.joyel.zbyte.Deobfuscator;
+import dev.joyel.zbyte.ZByte;
 import dev.joyel.zbyte.rules.Rule;
 import dev.joyel.zbyte.transformers.Transformer;
 import dev.joyel.zbyte.transformers.special.SuperblaubeereTransformer;
@@ -46,7 +46,7 @@ public class RuleSuperblaubeereObfuscation implements Rule {
 	}
 
 	@Override
-	public String test(Deobfuscator deobfuscator) {
+	public String test(ZByte deobfuscator) {
 		for (ClassNode classNode : deobfuscator.getClasses().values()) {
 			MethodNode clinit = TransformerHelper.findClinit(classNode);
 			if (clinit == null) {

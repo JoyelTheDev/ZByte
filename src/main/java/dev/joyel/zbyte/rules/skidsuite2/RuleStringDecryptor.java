@@ -3,7 +3,7 @@ package dev.joyel.zbyte.rules.skidsuite2;
 import java.util.Collection;
 import java.util.Collections;
 
-import dev.joyel.zbyte.Deobfuscator;
+import dev.joyel.zbyte.ZByte;
 import dev.joyel.zbyte.analyzer.AnalyzerResult;
 import dev.joyel.zbyte.analyzer.MethodAnalyzer;
 import dev.joyel.zbyte.analyzer.frame.Frame;
@@ -27,7 +27,7 @@ public class RuleStringDecryptor implements Rule {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         for (ClassNode classNode : deobfuscator.getClasses().values()) {
             for (MethodNode methodNode : classNode.methods) {
                 if (methodNode.instructions == null || methodNode.instructions.size() == 0) {

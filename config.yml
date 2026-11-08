@@ -1,0 +1,16 @@
+input: input.jar
+output: output.jar
+
+sandbox:
+  enabled: true
+  logOnly: false
+  maxInstructions: 500000000
+  timeoutMillis: 60000
+  allow: []
+  deny: []
+
+transformers:
+  - stringer.StringEncryptionTransformer
+  - normalizer.ClassNormalizer: {}
+    normalizer.FieldNormalizer: {}
+    normalizer.MethodNormalizer: {}

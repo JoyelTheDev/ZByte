@@ -1,9 +1,9 @@
-# Deobfuscator
+# ZByte
  
 This project aims to deobfuscate most commercially-available obfuscators for Java.
 
 ## Updates
-To download an updated version of Java Deobfuscator, go to the releases tab.
+To download an updated version of ZByte, go to the releases tab.
 
 If you would like to run this program with a GUI, go to https://github.com/java-deobfuscator/deobfuscator-gui and grab a download. Put the deobfuscator-gui.jar in the same folder as deobfuscator.jar.
 
@@ -72,4 +72,4 @@ They were written specifically for Android apps.
 
 ## Licensing
 
-Java Deobfuscator is licensed under the Apache 2.0 license.
+ZByte is licensed under the Apache 2.0 license.

@@ -72,7 +72,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>dev.joyel.zbyte.DeobfuscatorMain</mainClass>
+                            <mainClass>dev.joyel.zbyte.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -33,7 +33,7 @@ public class RuleSimpleStringEncryption implements Rule {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         if (new RuleEnhancedStringEncryption().test(deobfuscator) != null)
             return null;
         if (new RuleMethodParameterChangeStringEncryption().test(deobfuscator) != null)

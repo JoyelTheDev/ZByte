@@ -36,7 +36,7 @@ public class RuleInvokedynamic1 implements Rule, Opcodes {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         for (ClassNode classNode : deobfuscator.getClasses().values()) {
             MethodNode bsm = TransformerHelper.findMethodNode(classNode, null, Invokedynamic1Transformer.BSM_DESC);
             if (bsm == null || bsm.instructions == null) {

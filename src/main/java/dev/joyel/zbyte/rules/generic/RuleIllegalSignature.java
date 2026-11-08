@@ -32,7 +32,7 @@ public class RuleIllegalSignature implements Rule {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         for (ClassNode classNode : deobfuscator.getClasses().values()) {
             if (classNode.signature != null) {
                 try {

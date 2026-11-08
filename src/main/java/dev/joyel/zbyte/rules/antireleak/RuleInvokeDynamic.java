@@ -3,7 +3,7 @@ package dev.joyel.zbyte.rules.antireleak;
 import java.util.Collection;
 import java.util.Collections;
 
-import dev.joyel.zbyte.Deobfuscator;
+import dev.joyel.zbyte.ZByte;
 import dev.joyel.zbyte.rules.Rule;
 import dev.joyel.zbyte.transformers.Transformer;
 import dev.joyel.zbyte.transformers.antireleak.InvokedynamicTransformer;
@@ -16,7 +16,7 @@ public class RuleInvokeDynamic implements Rule {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         int invokeDynamicCount = InvokedynamicTransformer.findInvokeDynamic(deobfuscator.getClasses().values());
         if (invokeDynamicCount > 0) {
             return "Found " + invokeDynamicCount + " potential AntiReleak Invokedynamic instructions";

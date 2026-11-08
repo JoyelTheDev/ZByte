@@ -34,7 +34,7 @@ public class RuleStringDecryptor implements Rule, Opcodes {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
     	for (ClassNode classNode : deobfuscator.getClasses().values()) {
     		for (MethodNode methodNode : classNode.methods) {
     			if (!methodNode.desc.equals("(Ljava/lang/String;)Ljava/lang/String;")

@@ -35,7 +35,7 @@ public class RuleHideAccess implements Rule, Opcodes {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         for (ClassNode classNode : deobfuscator.getClasses().values()) {
         	if(classNode.version == 49 && Modifier.isFinal(classNode.access) && classNode.superName.equals("java/lang/Object")) {
         		List<String> methodsDesc = classNode.methods.stream().map(m -> m.desc).collect(Collectors.toList());

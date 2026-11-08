@@ -30,7 +30,7 @@ public class RuleEncryptedClass implements Rule {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         for (Map.Entry<String, byte[]> name : deobfuscator.getInputPassthrough().entrySet()) {
             if (name.getKey().endsWith(".classx")) {
                 return "Found file " + name.getKey();

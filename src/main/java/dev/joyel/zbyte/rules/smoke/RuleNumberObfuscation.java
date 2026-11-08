@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import dev.joyel.zbyte.Deobfuscator;
+import dev.joyel.zbyte.ZByte;
 import dev.joyel.zbyte.rules.Rule;
 import dev.joyel.zbyte.transformers.Transformer;
 import dev.joyel.zbyte.transformers.smoke.NumberObfuscationTransformer;
@@ -28,7 +28,7 @@ public class RuleNumberObfuscation implements Rule {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         Map<String, ClassNode> classes = deobfuscator.getClasses();
         Set<String> numberMethods = new HashSet<>();
 

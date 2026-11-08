@@ -2,6 +2,8 @@ package dev.joyel.zbyte.executor;
 
 import dev.joyel.zbyte.asm.ConstantPool;
 import dev.joyel.zbyte.executor.providers.Provider;
+import dev.joyel.zbyte.executor.sandbox.SandboxPolicy;
+import dev.joyel.zbyte.executor.sandbox.SandboxedProvider;
 import dev.joyel.zbyte.executor.values.JavaValue;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -25,8 +27,11 @@ public class Context { //FIXME clinit classes
 
     public File file;
 
+    public SandboxPolicy.Meter meter;
+
     public Context(Provider provider) {
-        this.provider = provider;
+        this.provider = SandboxedProvider.wrap(provider);
+        this.meter = SandboxPolicy.active().newMeter();
     }
 
     public Context copyForNewThread() {
@@ -38,6 +43,7 @@ public class Context { //FIXME clinit classes
         threadContext.monitor = monitor;
         threadContext.clinit = clinit;
         threadContext.file = file;
+        threadContext.meter = meter;
         threadContext.breakpointsBefore = breakpointsBefore;
         threadContext.breakpointsAfter = breakpointsAfter;
         return threadContext;

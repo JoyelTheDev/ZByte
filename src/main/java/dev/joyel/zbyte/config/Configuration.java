@@ -42,6 +42,9 @@ public class Configuration {
     private List<String> ignoredClasses;
 
     @JsonProperty
+    private SandboxConfig sandbox = new SandboxConfig();
+
+    @JsonProperty
     private boolean smartRedo;
 
     @JsonProperty
@@ -77,6 +80,14 @@ public class Configuration {
      */
     @JsonProperty
     private boolean deleteUselessClasses;
+
+    public SandboxConfig getSandbox() {
+        return sandbox == null ? new SandboxConfig() : sandbox;
+    }
+
+    public void setSandbox(SandboxConfig sandbox) {
+        this.sandbox = sandbox;
+    }
 
     public File getInput() {
         return input;

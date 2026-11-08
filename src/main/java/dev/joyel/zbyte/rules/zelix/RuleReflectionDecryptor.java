@@ -34,7 +34,7 @@ public class RuleReflectionDecryptor implements Rule, Opcodes {
     }
 
     @Override
-    public String test(Deobfuscator deobfuscator) {
+    public String test(ZByte deobfuscator) {
         for (ClassNode classNode : deobfuscator.getClasses().values()) {
         	boolean isZKM = true;
         	

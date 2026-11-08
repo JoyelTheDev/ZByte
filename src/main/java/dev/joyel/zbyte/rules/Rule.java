@@ -25,7 +25,7 @@ import java.util.*;
 public interface Rule extends Opcodes {
     String getDescription();
 
-    String test(Deobfuscator deobfuscator);
+    String test(ZByte deobfuscator);
 
     Collection<Class<? extends Transformer<?>>> getRecommendTransformers();
 }
