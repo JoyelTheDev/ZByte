@@ -433,7 +433,7 @@ public class ZByte {
         logger.info("Transforming");
         if (configuration.getTransformers() != null) {
             for (TransformerConfig config : configuration.getTransformers()) {
-                logger.info("Running {}", config.getImplementation().getCanonicalName());
+                logger.info("Running {}", config.getImplementation().getSimpleName());
                 runFromConfig(config);
             }
         }

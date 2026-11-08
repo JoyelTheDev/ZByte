@@ -22,15 +22,22 @@ public class StringBuilderTransformer extends Transformer<TransformerConfig> {
     @Override
     public boolean transform() throws Throwable {
         boolean changed = false;
+        int folded = 0;
         for (ClassNode classNode : classNodes()) {
             for (MethodNode methodNode : classNode.methods) {
                 Set<LabelNode> referenced = UniversalSupport.referencedLabels(methodNode);
                 for (AbstractInsnNode insn : methodNode.instructions.toArray()) {
                     if (insn.getOpcode() == NEW && ((TypeInsnNode) insn).desc.equals(BUILDER)) {
-                        changed |= fold(methodNode, referenced, insn);
+                        if (fold(methodNode, referenced, insn)) {
+                            changed = true;
+                            folded++;
+                        }
                     }
                 }
             }
+        }
+        if (folded > 0) {
+            logger.info("Folded {} StringBuilder chains", folded);
         }
         return changed;
     }

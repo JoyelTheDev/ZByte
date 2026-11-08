@@ -17,28 +17,31 @@ public class CleanRedundantJumpsTransformer extends Transformer<CleanRedundantJu
     @Override
     public boolean transform() throws Throwable {
         int limit = getConfig().getMaxAnalysisInstructions();
-        boolean changed = false;
+        int count = 0;
         for (ClassNode classNode : classNodes()) {
             for (MethodNode methodNode : new ArrayList<>(classNode.methods)) {
                 if (limit > 0 && methodNode.instructions.size() > limit) {
                     continue;
                 }
-                changed |= process(classNode, methodNode);
+                count += process(classNode, methodNode);
             }
         }
-        return changed;
+        if (count > 0) {
+            logger.info("Simplified {} redundant jumps", count);
+        }
+        return count > 0;
     }
 
-    private boolean process(ClassNode classNode, MethodNode methodNode) {
+    private int process(ClassNode classNode, MethodNode methodNode) {
         if (!containsConditionalJump(methodNode)) {
-            return false;
+            return 0;
         }
         Frame<ConstantAnalysis.Value>[] frames = ConstantAnalysis.analyze(classNode, methodNode);
         if (frames == null) {
-            return false;
+            return 0;
         }
         AbstractInsnNode[] insns = methodNode.instructions.toArray();
-        boolean changed = false;
+        int count = 0;
         for (int i = 0; i < insns.length; i++) {
             Frame<ConstantAnalysis.Value> frame = frames[i];
             if (frame == null || !(insns[i] instanceof JumpInsnNode)) {
@@ -67,9 +70,9 @@ public class CleanRedundantJumpsTransformer extends Transformer<CleanRedundantJu
             } else {
                 methodNode.instructions.remove(jump);
             }
-            changed = true;
+            count++;
         }
-        return changed;
+        return count;
     }
 
     private static boolean evaluate(int opcode, int left, int right) {

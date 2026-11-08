@@ -16,7 +16,7 @@ public class InlineConstantValuesTransformer extends Transformer<InlineConstantV
     @Override
     public boolean transform() throws Throwable {
         int limit = getConfig().getMaxAnalysisInstructions();
-        boolean changed = false;
+        int folded = 0;
         int skipped = 0;
         for (ClassNode classNode : classNodes()) {
             for (MethodNode methodNode : new ArrayList<>(classNode.methods)) {
@@ -24,25 +24,28 @@ public class InlineConstantValuesTransformer extends Transformer<InlineConstantV
                     skipped++;
                     continue;
                 }
-                changed |= process(classNode, methodNode);
+                folded += process(classNode, methodNode);
             }
         }
         if (skipped > 0) {
             logger.info("Skipped constant analysis for {} methods above {} instructions", skipped, limit);
         }
-        return changed;
+        if (folded > 0) {
+            logger.info("Folded {} constant expressions", folded);
+        }
+        return folded > 0;
     }
 
-    private boolean process(ClassNode classNode, MethodNode methodNode) {
+    private int process(ClassNode classNode, MethodNode methodNode) {
         if (!containsFoldable(methodNode)) {
-            return false;
+            return 0;
         }
         Frame<ConstantAnalysis.Value>[] frames = ConstantAnalysis.analyze(classNode, methodNode);
         if (frames == null) {
-            return false;
+            return 0;
         }
         AbstractInsnNode[] insns = methodNode.instructions.toArray();
-        boolean changed = false;
+        int folded = 0;
         for (int i = 0; i < insns.length; i++) {
             Frame<ConstantAnalysis.Value> frame = frames[i];
             if (frame == null) {
@@ -72,9 +75,9 @@ public class InlineConstantValuesTransformer extends Transformer<InlineConstantV
                 methodNode.instructions.insertBefore(insn, new InsnNode(second.getSize() == 2 ? POP2 : POP));
             }
             methodNode.instructions.set(insn, UniversalSupport.constantInsn(result));
-            changed = true;
+            folded++;
         }
-        return changed;
+        return folded;
     }
 
     private static boolean containsFoldable(MethodNode methodNode) {

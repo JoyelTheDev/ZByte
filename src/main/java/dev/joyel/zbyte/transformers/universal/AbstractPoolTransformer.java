@@ -65,8 +65,11 @@ public abstract class AbstractPoolTransformer extends Transformer<TransformerCon
 
     protected abstract Object normalize(Object value, String fieldDesc);
 
+    private int replaced;
+
     @Override
     public boolean transform() throws Throwable {
+        replaced = 0;
         boolean changed = false;
         for (ClassNode classNode : classNodes()) {
             for (MethodNode methodNode : new ArrayList<>(classNode.methods)) {
@@ -86,6 +89,9 @@ public abstract class AbstractPoolTransformer extends Transformer<TransformerCon
                     break;
                 }
             }
+        }
+        if (replaced > 0) {
+            logger.info("Inlined {} pool values", replaced);
         }
         return changed;
     }
@@ -197,6 +203,7 @@ public abstract class AbstractPoolTransformer extends Transformer<TransformerCon
                 method.instructions.remove(indexInsn);
                 method.instructions.remove(insn);
                 changed = true;
+                replaced++;
             }
         }
         if (changed && !unmatched) {

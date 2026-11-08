@@ -15,8 +15,11 @@ public class AccessRepairTransformer extends Transformer<AccessRepairTransformer
     private static final int METHOD_MASK = ACC_PUBLIC | ACC_PRIVATE | ACC_PROTECTED | ACC_STATIC | ACC_FINAL | ACC_SYNCHRONIZED | ACC_BRIDGE | ACC_VARARGS | ACC_NATIVE | ACC_ABSTRACT | ACC_STRICT | ACC_SYNTHETIC;
     private static final int PARAMETER_MASK = ACC_FINAL | ACC_SYNTHETIC | ACC_MANDATED;
 
+    private int repaired;
+
     @Override
     public boolean transform() throws Throwable {
+        repaired = 0;
         boolean strip = getConfig().isRemoveSynthetic();
         boolean changed = false;
         for (ClassNode classNode : classNodes()) {
@@ -55,6 +58,9 @@ public class AccessRepairTransformer extends Transformer<AccessRepairTransformer
                 fieldNode.access = access;
             }
         }
+        if (repaired > 0) {
+            logger.info("Repaired {} access flags", repaired);
+        }
         return changed;
     }
 
@@ -62,8 +68,12 @@ public class AccessRepairTransformer extends Transformer<AccessRepairTransformer
         return access & mask & ~extraRemoved;
     }
 
-    private static boolean update(int before, int after) {
-        return before != after;
+    private boolean update(int before, int after) {
+        if (before == after) {
+            return false;
+        }
+        repaired++;
+        return true;
     }
 
     public static class Config extends TransformerConfig {

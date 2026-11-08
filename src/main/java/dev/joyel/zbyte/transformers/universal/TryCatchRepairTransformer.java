@@ -17,6 +17,7 @@ public class TryCatchRepairTransformer extends Transformer<TransformerConfig> {
     @Override
     public boolean transform() throws Throwable {
         boolean changed = false;
+        int removed = 0;
         for (ClassNode classNode : classNodes()) {
             for (MethodNode methodNode : classNode.methods) {
                 if (methodNode.tryCatchBlocks == null || methodNode.tryCatchBlocks.isEmpty()) {
@@ -26,8 +27,15 @@ public class TryCatchRepairTransformer extends Transformer<TransformerConfig> {
                 for (AbstractInsnNode insn : methodNode.instructions.toArray()) {
                     present.add(insn);
                 }
-                changed |= methodNode.tryCatchBlocks.removeIf(block -> isBroken(methodNode, present, block));
+                int before = methodNode.tryCatchBlocks.size();
+                methodNode.tryCatchBlocks.removeIf(block -> isBroken(methodNode, present, block));
+                int diff = before - methodNode.tryCatchBlocks.size();
+                removed += diff;
+                changed |= diff > 0;
             }
+        }
+        if (removed > 0) {
+            logger.info("Removed {} broken try-catch blocks", removed);
         }
         return changed;
     }

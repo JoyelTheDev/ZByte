@@ -11,8 +11,11 @@ import java.util.List;
 
 public class AnnotationFilterTransformer extends Transformer<TransformerConfig> {
 
+    private int removed;
+
     @Override
     public boolean transform() throws Throwable {
+        removed = 0;
         boolean changed = false;
         for (ClassNode classNode : classNodes()) {
             changed |= filter(classNode.invisibleAnnotations);
@@ -28,14 +31,24 @@ public class AnnotationFilterTransformer extends Transformer<TransformerConfig> 
                 changed |= filter(fieldNode.visibleAnnotations);
             }
         }
+        if (removed > 0) {
+            logger.info("Removed {} illegal annotations", removed);
+        }
         return changed;
     }
 
-    private static boolean filter(List<AnnotationNode> annotations) {
-        return annotations != null && annotations.removeIf(AnnotationFilterTransformer::isIllegal);
+    private boolean filter(List<AnnotationNode> annotations) {
+        if (annotations == null) {
+            return false;
+        }
+        int before = annotations.size();
+        annotations.removeIf(AnnotationFilterTransformer::isIllegal);
+        int diff = before - annotations.size();
+        removed += diff;
+        return diff > 0;
     }
 
-    private static boolean filterParameters(List<AnnotationNode>[] parameterAnnotations) {
+    private boolean filterParameters(List<AnnotationNode>[] parameterAnnotations) {
         boolean changed = false;
         if (parameterAnnotations != null) {
             for (List<AnnotationNode> annotations : parameterAnnotations) {

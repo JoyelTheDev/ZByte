@@ -10,6 +10,7 @@ public class RecoverSyntheticsTransformer extends Transformer<TransformerConfig>
     @Override
     public boolean transform() throws Throwable {
         boolean changed = false;
+        int recovered = 0;
         for (ClassNode classNode : classNodes()) {
             for (MethodNode methodNode : classNode.methods) {
                 if ((methodNode.access & ACC_SYNTHETIC) != 0) {
@@ -18,8 +19,12 @@ public class RecoverSyntheticsTransformer extends Transformer<TransformerConfig>
                 if (methodNode.name.startsWith("lambda$") || methodNode.name.matches("access\\$\\d+")) {
                     methodNode.access |= ACC_SYNTHETIC;
                     changed = true;
+                    recovered++;
                 }
             }
+        }
+        if (recovered > 0) {
+            logger.info("Recovered {} synthetic methods", recovered);
         }
         return changed;
     }

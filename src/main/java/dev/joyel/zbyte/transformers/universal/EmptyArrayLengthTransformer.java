@@ -14,6 +14,7 @@ public class EmptyArrayLengthTransformer extends Transformer<TransformerConfig> 
     @Override
     public boolean transform() throws Throwable {
         boolean changed = false;
+        int replaced = 0;
         for (ClassNode classNode : classNodes()) {
             for (MethodNode methodNode : classNode.methods) {
                 Set<LabelNode> referenced = UniversalSupport.referencedLabels(methodNode);
@@ -34,8 +35,12 @@ public class EmptyArrayLengthTransformer extends Transformer<TransformerConfig> 
                     methodNode.instructions.remove(creation);
                     methodNode.instructions.remove(size);
                     changed = true;
+                    replaced++;
                 }
             }
+        }
+        if (replaced > 0) {
+            logger.info("Replaced {} array length calls with constants", replaced);
         }
         return changed;
     }

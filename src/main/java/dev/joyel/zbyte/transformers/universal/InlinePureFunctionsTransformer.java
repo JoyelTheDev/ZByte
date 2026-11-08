@@ -62,6 +62,7 @@ public class InlinePureFunctionsTransformer extends Transformer<InlinePureFuncti
             return false;
         }
         boolean changed = false;
+        int inlined = 0;
         for (ClassNode classNode : classNodes()) {
             for (MethodNode methodNode : classNode.methods) {
                 for (AbstractInsnNode insn : methodNode.instructions.toArray()) {
@@ -75,8 +76,12 @@ public class InlinePureFunctionsTransformer extends Transformer<InlinePureFuncti
                     }
                     inline(methodNode, call, callee);
                     changed = true;
+                    inlined++;
                 }
             }
+        }
+        if (inlined > 0) {
+            logger.info("Inlined {} pure function calls", inlined);
         }
         if (changed && getConfig().isRemovePureMethods()) {
             removeUnreferenced(pure, owners);

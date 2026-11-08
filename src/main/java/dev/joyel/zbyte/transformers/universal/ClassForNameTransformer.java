@@ -23,6 +23,7 @@ public class ClassForNameTransformer extends Transformer<ClassForNameTransformer
         Set<String> names = new HashSet<>(getConfig().getClassNames());
         boolean all = names.contains("*");
         boolean changed = false;
+        int removed = 0;
         for (ClassNode classNode : classNodes()) {
             for (MethodNode methodNode : classNode.methods) {
                 Set<LabelNode> referenced = UniversalSupport.referencedLabels(methodNode);
@@ -46,8 +47,12 @@ public class ClassForNameTransformer extends Transformer<ClassForNameTransformer
                     methodNode.instructions.remove(call);
                     methodNode.instructions.remove(pop);
                     changed = true;
+                    removed++;
                 }
             }
+        }
+        if (removed > 0) {
+            logger.info("Removed {} Class.forName calls", removed);
         }
         return changed;
     }

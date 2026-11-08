@@ -15,14 +15,21 @@ public class UselessPopCleanTransformer extends Transformer<TransformerConfig> {
     @Override
     public boolean transform() throws Throwable {
         boolean changed = false;
+        int removed = 0;
         for (ClassNode classNode : classNodes()) {
             for (MethodNode methodNode : classNode.methods) {
                 boolean progress;
                 do {
                     progress = clean(methodNode);
                     changed |= progress;
+                    if (progress) {
+                        removed++;
+                    }
                 } while (progress);
             }
+        }
+        if (removed > 0) {
+            logger.info("Removed {} useless pop instructions", removed);
         }
         return changed;
     }
