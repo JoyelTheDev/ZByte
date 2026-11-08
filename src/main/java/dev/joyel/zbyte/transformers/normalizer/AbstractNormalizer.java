@@ -54,6 +54,10 @@ public abstract class AbstractNormalizer<T extends AbstractNormalizer.Config> ex
         removed.forEach(classpath::remove);
         classes.putAll(updated);
         classpath.putAll(updated);
+        int resources = ResourceRemapper.apply(getDeobfuscator().getInputPassthrough(), name -> remapper.map(name));
+        if (resources > 0) {
+            logger.info("Updated {} manifest and service entries", resources);
+        }
         getDeobfuscator().resetHierachy();
         return true;
     }
