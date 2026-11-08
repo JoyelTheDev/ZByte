@@ -20,7 +20,7 @@ public class TransformerConfigDeserializer extends ValueDeserializer<Transformer
     private static final String[] SHORT_NAME_PACKAGES = {
             "universal.",
             "general.",
-            "special."
+            "special.",
             "general.peephole.",
             "general.removers.",
             "normalizer.",
