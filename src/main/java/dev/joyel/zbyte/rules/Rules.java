@@ -89,6 +89,13 @@ public class Rules {
             new RuleConstantArithmetic(),
             new RuleRedundantJumps(),
             new RuleRedundantSwitches(),
-            new RulePureFunctions()
+            new RulePureFunctions(),
+            new RuleDuplicateAnnotations(),
+            new RuleLongAnnotations(),
+            new RuleLongExceptions(),
+            new RuleDeadCode(),
+            new RuleDuplicateCatchBlocks(),
+            new RuleGotoChains(),
+            new RuleCycleClasses()
     );
 }

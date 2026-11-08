@@ -87,5 +87,18 @@ public class Transformers {
         public static final Class<? extends Transformer> FLOW = dev.joyel.zbyte.transformers.universal.UniversalFlowTransformer.class;
         public static final Class<? extends Transformer> NUMBER_POOL = dev.joyel.zbyte.transformers.universal.UniversalNumberPoolTransformer.class;
         public static final Class<? extends Transformer> STRING_POOL = dev.joyel.zbyte.transformers.universal.UniversalStringPoolTransformer.class;
+        public static final Class<? extends Transformer> DUPLICATE_ANNOTATION_REMOVING = dev.joyel.zbyte.transformers.universal.DuplicateAnnotationRemovingTransformer.class;
+        public static final Class<? extends Transformer> FRAME_REMOVING = dev.joyel.zbyte.transformers.universal.FrameRemovingTransformer.class;
+        public static final Class<? extends Transformer> LONG_ANNOTATION_REMOVING = dev.joyel.zbyte.transformers.universal.LongAnnotationRemovingTransformer.class;
+        public static final Class<? extends Transformer> LONG_EXCEPTION_REMOVING = dev.joyel.zbyte.transformers.universal.LongExceptionRemovingTransformer.class;
+        public static final Class<? extends Transformer> SYNTHETIC_MODIFIER_REMOVING = dev.joyel.zbyte.transformers.universal.SyntheticModifierRemovingTransformer.class;
+        public static final Class<? extends Transformer> UNKNOWN_ATTRIBUTE_REMOVING = dev.joyel.zbyte.transformers.universal.UnknownAttributeRemovingTransformer.class;
+        public static final Class<? extends Transformer> VARIABLE_TABLE_NORMALIZING = dev.joyel.zbyte.transformers.universal.VariableTableNormalizingTransformer.class;
+        public static final Class<? extends Transformer> DEAD_CODE_REMOVING = dev.joyel.zbyte.transformers.universal.DeadCodeRemovingTransformer.class;
+        public static final Class<? extends Transformer> GOTO_INLINING = dev.joyel.zbyte.transformers.universal.GotoInliningTransformer.class;
+        public static final Class<? extends Transformer> DUPLICATE_CATCH_MERGING = dev.joyel.zbyte.transformers.universal.DuplicateCatchMergingTransformer.class;
+        public static final Class<? extends Transformer> CYCLE_CLASS_REMOVING = dev.joyel.zbyte.transformers.universal.CycleClassRemovingTransformer.class;
+        public static final Class<? extends Transformer> UNUSED_METHOD_REMOVER = dev.joyel.zbyte.transformers.universal.UnusedMethodRemoverTransformer.class;
+        public static final Class<? extends Transformer> ENUM_NAME_RESTORATION = dev.joyel.zbyte.transformers.universal.EnumNameRestorationTransformer.class;
     }
 }
