@@ -16,7 +16,7 @@ public class SomeRandomDeobfuscator {
         config.setTransformers(Arrays.asList(
                 TransformerConfig.configFor(PeepholeOptimizer.class)
         ));
-        new Deobfuscator(config).start();
+        new ZByte(config).start();
     }
 }
 ```
