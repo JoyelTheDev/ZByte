@@ -1,19 +1,3 @@
-/*
- * Copyright 2018 Sam Sun <github-contact@samczsun.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package dev.joyel.zbyte.rules;
 
 import java.util.List;
@@ -39,6 +23,7 @@ import dev.joyel.zbyte.rules.zelix.RuleMethodParameterChangeStringEncryption;
 import dev.joyel.zbyte.rules.zelix.RuleReflectionDecryptor;
 import dev.joyel.zbyte.rules.zelix.RuleSimpleStringEncryption;
 import dev.joyel.zbyte.rules.zelix.RuleSuspiciousClinit;
+import dev.joyel.zbyte.rules.universal.*;
 
 public class Rules {
 
@@ -89,6 +74,21 @@ public class Rules {
 
             // Special
             new RuleBisguardClassEncryption(),
-            new RuleSuperblaubeereObfuscation()
+            new RuleSuperblaubeereObfuscation(),
+
+            // Universal
+            new RuleIllegalAccessFlags(),
+            new RuleIllegalAnnotation(),
+            new RuleBrokenTryCatch(),
+            new RuleMissingSynthetics(),
+            new RuleClassForNameJunk(),
+            new RuleStringBuilderConstants(),
+            new RuleStringPool(),
+            new RuleNumberPool(),
+            new RuleEmptyArrayLength(),
+            new RuleConstantArithmetic(),
+            new RuleRedundantJumps(),
+            new RuleRedundantSwitches(),
+            new RulePureFunctions()
     );
 }

@@ -69,4 +69,23 @@ public class Transformers {
         public static final Class<? extends Transformer> SOURCEFILE_CLASS_NORMALIZER = SourceFileClassNormalizer.class;
         public static final Class<? extends Transformer> DUPLICATE_RENAMER = dev.joyel.zbyte.transformers.normalizer.DuplicateRenamer.class;
     }
+
+    public static class Universal {
+        public static final Class<? extends Transformer> ACCESS_REPAIR = dev.joyel.zbyte.transformers.universal.AccessRepairTransformer.class;
+        public static final Class<? extends Transformer> ANNOTATION_FILTER = dev.joyel.zbyte.transformers.universal.AnnotationFilterTransformer.class;
+        public static final Class<? extends Transformer> CLASS_FOR_NAME = dev.joyel.zbyte.transformers.universal.ClassForNameTransformer.class;
+        public static final Class<? extends Transformer> RECOVER_SYNTHETICS = dev.joyel.zbyte.transformers.universal.RecoverSyntheticsTransformer.class;
+        public static final Class<? extends Transformer> TRY_CATCH_REPAIR = dev.joyel.zbyte.transformers.universal.TryCatchRepairTransformer.class;
+        public static final Class<? extends Transformer> STRING_BUILDER = dev.joyel.zbyte.transformers.universal.StringBuilderTransformer.class;
+        public static final Class<? extends Transformer> INLINE_PURE_FUNCTIONS = dev.joyel.zbyte.transformers.universal.InlinePureFunctionsTransformer.class;
+        public static final Class<? extends Transformer> INLINE_CONSTANT_VALUES = dev.joyel.zbyte.transformers.universal.InlineConstantValuesTransformer.class;
+        public static final Class<? extends Transformer> EMPTY_ARRAY_LENGTH = dev.joyel.zbyte.transformers.universal.EmptyArrayLengthTransformer.class;
+        public static final Class<? extends Transformer> USELESS_POP_CLEAN = dev.joyel.zbyte.transformers.universal.UselessPopCleanTransformer.class;
+        public static final Class<? extends Transformer> CLEAN_REDUNDANT_JUMPS = dev.joyel.zbyte.transformers.universal.CleanRedundantJumpsTransformer.class;
+        public static final Class<? extends Transformer> CLEAN_REDUNDANT_SWITCHES = dev.joyel.zbyte.transformers.universal.CleanRedundantSwitchesTransformer.class;
+        public static final Class<? extends Transformer> NUMBER = dev.joyel.zbyte.transformers.universal.UniversalNumberTransformer.class;
+        public static final Class<? extends Transformer> FLOW = dev.joyel.zbyte.transformers.universal.UniversalFlowTransformer.class;
+        public static final Class<? extends Transformer> NUMBER_POOL = dev.joyel.zbyte.transformers.universal.UniversalNumberPoolTransformer.class;
+        public static final Class<? extends Transformer> STRING_POOL = dev.joyel.zbyte.transformers.universal.UniversalStringPoolTransformer.class;
+    }
 }
