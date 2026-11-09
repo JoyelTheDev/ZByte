@@ -1,4 +1,4 @@
-package dev.joyel.zbyte;
+package dev.joyel.zbyte.transformers.universal;
 
 import org.junit.Test;
 import dev.joyel.zbyte.config.TransformerConfig;

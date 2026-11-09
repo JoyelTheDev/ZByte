@@ -1,4 +1,4 @@
-package dev.joyel.zbyte;
+package dev.joyel.zbyte.transformers.universal;
 
 import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.transformers.Transformer;

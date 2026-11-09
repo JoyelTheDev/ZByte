@@ -1,4 +1,4 @@
-package dev.joyel.zbyte;
+package dev.joyel.zbyte.rules.universal;
 
 import dev.joyel.zbyte.ZByte;
 import dev.joyel.zbyte.config.Configuration;

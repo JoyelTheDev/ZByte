@@ -1,4 +1,4 @@
-package dev.joyel.zbyte;
+package dev.joyel.zbyte.executor.sandbox;
 
 import dev.joyel.zbyte.executor.providers.DelegatingProvider;
 import dev.joyel.zbyte.executor.providers.Provider;
