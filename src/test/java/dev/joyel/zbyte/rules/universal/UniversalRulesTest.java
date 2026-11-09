@@ -33,15 +33,15 @@ public class UniversalRulesTest implements Opcodes {
         return m;
     }
 
-    private static Deobfuscator deobfuscator(ClassNode... classes) {
-        Deobfuscator d = new Deobfuscator(new Configuration());
+    private static ZByte deobfuscator(ClassNode... classes) {
+        ZByte d = new ZByte(new Configuration());
         for (ClassNode c : classes) {
             d.getClasses().put(c.name, c);
         }
         return d;
     }
 
-    private static String run(Class<? extends Rule> type, Deobfuscator d) throws Exception {
+    private static String run(Class<? extends Rule> type, ZByte d) throws Exception {
         return type.getDeclaredConstructor().newInstance().test(d);
     }
 
@@ -53,7 +53,7 @@ public class UniversalRulesTest implements Opcodes {
 
     @Test
     public void cleanInputTriggersNothing() throws Exception {
-        Deobfuscator d = deobfuscator(clean());
+        ZByte d = deobfuscator(clean());
         for (Rule rule : Rules.RULES) {
             if (rule.getClass().getPackage().getName().endsWith("universal")) {
                 assertNull(rule.getClass().getSimpleName(), rule.test(d));
@@ -75,7 +75,7 @@ public class UniversalRulesTest implements Opcodes {
         method(c, ACC_PUBLIC | ACC_STATIC, "f", "()I",
                 new InsnNode(ICONST_3), new InsnNode(ICONST_2), new JumpInsnNode(IF_ICMPLE, l), new InsnNode(ICONST_1), new InsnNode(IRETURN),
                 l, new IntInsnNode(BIPUSH, 5), new IntInsnNode(BIPUSH, 3), new InsnNode(IADD), new InsnNode(IRETURN));
-        Deobfuscator d = deobfuscator(c);
+        ZByte d = deobfuscator(c);
         assertNotNull(run(RuleRedundantJumps.class, d));
         assertNotNull(run(RuleConstantArithmetic.class, d));
         assertNull(run(RuleRedundantSwitches.class, d));
