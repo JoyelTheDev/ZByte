@@ -89,7 +89,7 @@ jobs:
           path: ${{ steps.package.outputs.jar }}
 
       - name: Publish release
-        uses: softprops/action-gh-release@v3.0.3
+        uses: softprops/action-gh-release@v3.0.4
         with:
           files: ${{ steps.package.outputs.jar }}
           tag_name: v${{ steps.meta.outputs.next_number }}
