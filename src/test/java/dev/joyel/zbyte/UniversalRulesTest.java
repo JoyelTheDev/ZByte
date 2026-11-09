@@ -1,6 +1,6 @@
 package dev.joyel.zbyte;
 
-import dev.joyel.zbyte.Deobfuscator;
+import dev.joyel.zbyte.ZByte;
 import dev.joyel.zbyte.config.Configuration;
 import dev.joyel.zbyte.rules.Rule;
 import dev.joyel.zbyte.rules.Rules;
