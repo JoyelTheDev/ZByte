@@ -44,23 +44,12 @@ import dev.joyel.zbyte.rules.universal.*;
 public class Rules {
 
     public static final List<Rule> RULES = ImmutableList.of(
-            // ClassGuard
-            new RuleClassGuardPackage(),
-            new RuleEncryptedClass(),
-
             // Generic
             new RuleIllegalSignature(),
 
             // Normalizer
             new RuleSourceFileAttribute(),
 
-            // Stringer
-            new RuleStringDecryptor(),
-            new RuleStringDecryptorWithThread(),
-            new RuleStringDecryptorV3(),
-            new RuleHideAccess(),
-            new RuleInvokedynamic1(),
-            new RuleInvokedynamic2(),
 
             // Zelix
             new RuleSuspiciousClinit(),
@@ -75,18 +64,6 @@ public class Rules {
 
             // Allatori
             new dev.joyel.zbyte.rules.allatori.RuleStringDecryptor(),
-
-            // AntiReleak
-            new dev.joyel.zbyte.rules.antireleak.RuleStringDecryptor(),
-            new RuleInvokeDynamic(),
-
-            // SkidSuite2
-            new RuleFakeException(),
-            new dev.joyel.zbyte.rules.skidsuite2.RuleStringDecryptor(),
-
-            // Smoke
-            new dev.joyel.zbyte.rules.smoke.RuleStringDecryptor(),
-            new RuleNumberObfuscation(),
 
             // Special
             new RuleBisguardClassEncryption(),

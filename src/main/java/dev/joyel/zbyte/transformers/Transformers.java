@@ -24,13 +24,6 @@ import dev.joyel.zbyte.transformers.normalizer.ClassNormalizer;
 import dev.joyel.zbyte.transformers.normalizer.SourceFileClassNormalizer;
 
 public class Transformers {
-    public static class Stringer {
-        public static final Class<? extends Transformer> STRING_ENCRYPTION = dev.joyel.zbyte.transformers.stringer.StringEncryptionTransformer.class;
-        public static final Class<? extends Transformer> INVOKEDYNAMIC = dev.joyel.zbyte.transformers.stringer.InvokedynamicTransformer.class;
-        public static final Class<? extends Transformer> REFLECTION_OBFUSCATION = dev.joyel.zbyte.transformers.stringer.ReflectionObfuscationTransformer.class;
-        public static final Class<? extends Transformer> HIDEACCESS_OBFUSCATION = dev.joyel.zbyte.transformers.stringer.HideAccessObfuscationTransformer.class;
-        public static final Class<? extends Transformer> RESOURCE_ENCRYPTION = dev.joyel.zbyte.transformers.stringer.ResourceEncryptionTransformer.class;
-    }
     
     public static class General {
         public static final Class<? extends Transformer> PEEPHOLE_OPTIMIZER = dev.joyel.zbyte.transformers.general.peephole.PeepholeOptimizer.class;
@@ -43,22 +36,12 @@ public class Transformers {
         }
     }
     
-    public static class Smoke {
-    	public static final Class<? extends Transformer> STRING_ENCRYPTION = dev.joyel.zbyte.transformers.smoke.StringEncryptionTransformer.class;
-        public static final Class<? extends Transformer> NUMBER_OBFUSCATION = dev.joyel.zbyte.transformers.smoke.NumberObfuscationTransformer.class;
-        public static final Class<? extends Transformer> ILLEGAL_VARIABLE = dev.joyel.zbyte.transformers.smoke.IllegalVariableTransformer.class;
-    }
     
     public static class Zelix {
         public static final Class<? extends Transformer> STRING_ENCRYPTION_SIMPLE = dev.joyel.zbyte.transformers.zelix.string.SimpleStringEncryptionTransformer.class;
         public static final Class<? extends Transformer> STRING_ENCRYPTION_ENHANCED = dev.joyel.zbyte.transformers.zelix.string.EnhancedStringEncryptionTransformer.class;
         public static final Class<? extends Transformer> REFLECTION_OBFUSCATION = dev.joyel.zbyte.transformers.zelix.ReflectionObfuscationTransformer.class;
         public static final Class<? extends Transformer> FLOW_OBFUSCATION = dev.joyel.zbyte.transformers.zelix.FlowObfuscationTransformer.class;
-    }
-
-    public static class SkidSuite {
-        public static final Class<? extends Transformer> STRING_ENCRYPTION = dev.joyel.zbyte.transformers.skidsuite2.StringEncryptionTransformer.class;
-        public static final Class<? extends Transformer> FAKE_EXCEPTION = dev.joyel.zbyte.transformers.skidsuite2.FakeExceptionTransformer.class;
     }
 
     public static class Normalizer {
