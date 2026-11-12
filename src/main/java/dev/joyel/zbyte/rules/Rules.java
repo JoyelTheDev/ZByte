@@ -19,21 +19,8 @@ package dev.joyel.zbyte.rules;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import dev.joyel.zbyte.rules.antireleak.RuleInvokeDynamic;
-import dev.joyel.zbyte.rules.classguard.RuleClassGuardPackage;
-import dev.joyel.zbyte.rules.classguard.RuleEncryptedClass;
 import dev.joyel.zbyte.rules.generic.RuleIllegalSignature;
 import dev.joyel.zbyte.rules.normalizer.RuleSourceFileAttribute;
-import dev.joyel.zbyte.rules.skidsuite2.RuleFakeException;
-import dev.joyel.zbyte.rules.smoke.RuleNumberObfuscation;
-import dev.joyel.zbyte.rules.special.RuleBisguardClassEncryption;
-import dev.joyel.zbyte.rules.special.RuleSuperblaubeereObfuscation;
-import dev.joyel.zbyte.rules.stringer.RuleHideAccess;
-import dev.joyel.zbyte.rules.stringer.RuleInvokedynamic1;
-import dev.joyel.zbyte.rules.stringer.RuleInvokedynamic2;
-import dev.joyel.zbyte.rules.stringer.RuleStringDecryptor;
-import dev.joyel.zbyte.rules.stringer.RuleStringDecryptorV3;
-import dev.joyel.zbyte.rules.stringer.RuleStringDecryptorWithThread;
 import dev.joyel.zbyte.rules.zelix.RuleEnhancedStringEncryption;
 import dev.joyel.zbyte.rules.zelix.RuleMethodParameterChangeStringEncryption;
 import dev.joyel.zbyte.rules.zelix.RuleReflectionDecryptor;
@@ -64,11 +51,7 @@ public class Rules {
 
             // Allatori
             new dev.joyel.zbyte.rules.allatori.RuleStringDecryptor(),
-
-            // Special
-            new RuleBisguardClassEncryption(),
-            new RuleSuperblaubeereObfuscation(),
-
+            
             // Universal
             new RuleIllegalAccessFlags(),
             new RuleIllegalAnnotation(),
