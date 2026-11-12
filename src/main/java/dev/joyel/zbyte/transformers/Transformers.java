@@ -109,5 +109,10 @@ public class Transformers {
         public static final Class<? extends Transformer> EXCEPTION_COLLECTION = dev.joyel.zbyte.transformers.universal.ExceptionCollectionTransformer.class;
         public static final Class<? extends Transformer> REFLECTION_RESOLVER = dev.joyel.zbyte.transformers.universal.ReflectionResolverTransformer.class;
         public static final Class<? extends Transformer> REFLECTION_RESOLVER_WIDEN = dev.joyel.zbyte.transformers.universal.ReflectionResolverWidenTransformer.class;
+        public static final Class<? extends Transformer> INVOKE_DYNAMIC_INLINING = dev.joyel.zbyte.transformers.universal.InvokeDynamicInliningTransformer.class;
+        public static final Class<? extends Transformer> CALL_RESULT_INLINING = dev.joyel.zbyte.transformers.universal.CallResultInliningTransformer.class;
+        public static final Class<? extends Transformer> ZKM = dev.joyel.zbyte.transformers.zkm.ZkmTransformer.class;
+        public static final Class<? extends Transformer> ZKM_PARAMETER_UNPACKING = dev.joyel.zbyte.transformers.zkm.ZkmParameterUnpackingTransformer.class;
+        public static final Class<? extends Transformer> ZKM_DECRYPTION_CLEANUP = dev.joyel.zbyte.transformers.zkm.ZkmDecryptionCleanupTransformer.class;
     }
 }

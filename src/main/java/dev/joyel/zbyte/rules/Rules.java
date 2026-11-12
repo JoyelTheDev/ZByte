@@ -118,6 +118,7 @@ public class Rules {
             new RuleConstantVariables(),
             new RuleStaticConstants(),
             new RuleRedundantTryCatch(),
-            new RuleReflectionCalls()
+            new RuleReflectionCalls(),
+            new RuleZkmInvokeDynamic()
     );
 }

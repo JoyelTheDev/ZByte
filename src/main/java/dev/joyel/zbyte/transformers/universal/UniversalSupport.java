@@ -192,4 +192,27 @@ public final class UniversalSupport implements Opcodes {
         }
         return locals;
     }
+
+    public static org.objectweb.asm.tree.ClassNode readRuntimeClass(String internalName) {
+        try (java.io.InputStream in = ClassLoader.getPlatformClassLoader().getResourceAsStream(internalName + ".class")) {
+            if (in == null) {
+                return null;
+            }
+            byte[] bytes = in.readAllBytes();
+            int flags = org.objectweb.asm.ClassReader.SKIP_CODE | org.objectweb.asm.ClassReader.SKIP_DEBUG;
+            try {
+                org.objectweb.asm.tree.ClassNode node = new org.objectweb.asm.tree.ClassNode();
+                new org.objectweb.asm.ClassReader(bytes).accept(node, flags);
+                return node;
+            } catch (IllegalArgumentException unsupported) {
+                bytes[6] = 0;
+                bytes[7] = 65;
+                org.objectweb.asm.tree.ClassNode node = new org.objectweb.asm.tree.ClassNode();
+                new org.objectweb.asm.ClassReader(bytes).accept(node, flags);
+                return node;
+            }
+        } catch (java.io.IOException | RuntimeException e) {
+            return null;
+        }
+    }
 }

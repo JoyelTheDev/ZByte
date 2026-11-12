@@ -3,8 +3,24 @@ package dev.joyel.zbyte.transformers.universal;
 import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.transformers.Transformer;
 import org.junit.Test;
-import org.objectweb.asm.*;
-import org.objectweb.asm.tree.*;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.IntInsnNode;
+import org.objectweb.asm.tree.JumpInsnNode;
+import org.objectweb.asm.tree.LabelNode;
+import org.objectweb.asm.tree.LdcInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.TryCatchBlockNode;
+import org.objectweb.asm.tree.TypeInsnNode;
+import org.objectweb.asm.tree.VarInsnNode;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -188,5 +204,21 @@ public class AnalysisTransformersTest implements Opcodes {
             }
         }
         assertTrue(direct);
+    }
+
+    @Test(timeout = 20000)
+    public void loopCounterIsNotFoldedWhenBackEdgeFallsThroughIntoJumpTarget() throws Throwable {
+        ClassNode c = cls("a/Loop");
+        LabelNode loop = new LabelNode(), end = new LabelNode(), skip = new LabelNode();
+        method(c, ACC_PUBLIC | ACC_STATIC, "f", "()I",
+                in(ICONST_0), new VarInsnNode(ISTORE, 0),
+                loop, new VarInsnNode(ILOAD, 0), in(ICONST_5), new JumpInsnNode(IF_ICMPGE, end),
+                new org.objectweb.asm.tree.IincInsnNode(0, 1),
+                in(ICONST_0), new JumpInsnNode(IFNE, skip),
+                in(ICONST_0), in(POP),
+                skip, in(ICONST_0), new JumpInsnNode(IFEQ, loop),
+                end, new VarInsnNode(ILOAD, 0), in(IRETURN));
+        run(VariableFoldingTransformer.class, classes(c));
+        assertEquals(5, call(c, "f"));
     }
 }

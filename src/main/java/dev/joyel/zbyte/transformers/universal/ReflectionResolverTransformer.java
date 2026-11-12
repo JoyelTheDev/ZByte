@@ -634,15 +634,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     if (jdkClasses.containsKey(name)) {
       return jdkClasses.get(name);
     }
-    ClassNode loaded = null;
-    try (java.io.InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(name + ".class")) {
-      if (in != null) {
-        loaded = new ClassNode();
-        new org.objectweb.asm.ClassReader(in).accept(loaded, org.objectweb.asm.ClassReader.SKIP_CODE | org.objectweb.asm.ClassReader.SKIP_DEBUG);
-      }
-    } catch (java.io.IOException | RuntimeException e) {
-      loaded = null;
-    }
+    ClassNode loaded = UniversalSupport.readRuntimeClass(name);
     jdkClasses.put(name, loaded);
     return loaded;
   }

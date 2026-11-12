@@ -187,8 +187,11 @@ public class ReInterpreter extends Interpreter<ReValue> implements Opcodes {
 				return ObjectValue.VAL_JSR;
 			case GETSTATIC:
 				FieldInsnNode field = (FieldInsnNode) insn;
-				if (getStaticLookup != null)
-					return getStaticLookup.get(field);
+				if (getStaticLookup != null && getStaticLookup.hasLookup(field)) {
+					ReValue looked = getStaticLookup.get(field);
+					if (looked != null)
+						return looked;
+				}
 				Type fieldType = Type.getType(field.desc);
 				return newValue(fieldType);
 			case NEW:
@@ -564,11 +567,15 @@ public class ReInterpreter extends Interpreter<ReValue> implements Opcodes {
 			Type returnType = Type.getReturnType(method.desc);
 			if (returnType.getSort() != Type.VOID) {
 
-				if (opcode == INVOKESTATIC && invokeStaticLookup != null && values.stream().allMatch(ReValue::hasKnownValue)) {
-					return invokeStaticLookup.get(method, values);
+				if (opcode == INVOKESTATIC && invokeStaticLookup != null && invokeStaticLookup.hasLookup(method) && values.stream().allMatch(ReValue::hasKnownValue)) {
+					ReValue looked = invokeStaticLookup.get(method, values);
+					if (looked != null)
+						return looked;
 				} else if ((opcode == INVOKEVIRTUAL || opcode == INVOKEINTERFACE || opcode == INVOKESPECIAL)
-						&& invokeVirtualLookup != null && values.stream().allMatch(ReValue::hasKnownValue)) {
-					return invokeVirtualLookup.get(method, values.getFirst(), values.subList(1, values.size()));
+						&& invokeVirtualLookup != null && invokeVirtualLookup.hasLookup(method) && values.stream().allMatch(ReValue::hasKnownValue)) {
+					ReValue looked = invokeVirtualLookup.get(method, values.getFirst(), values.subList(1, values.size()));
+					if (looked != null)
+						return looked;
 				}
 			}
 			return newValue(returnType);

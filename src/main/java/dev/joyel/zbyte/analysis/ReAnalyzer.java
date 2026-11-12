@@ -86,19 +86,46 @@ public class ReAnalyzer extends Analyzer<ReValue> {
 				frames[index] = frame;
 			}
 		};
+		Consumer<AbstractInsnNode> targetFill = insn -> {
+			if (insn != null && !canBeReachedByFallthrough(insn))
+				frameFill.accept(insn);
+		};
 		for (AbstractInsnNode instruction : instructions) {
 			if (instruction instanceof JumpInsnNode jin) {
-				frameFill.accept(jin.label);
+				targetFill.accept(jin.label);
 				int opcode = jin.getOpcode();
 				if (opcode != GOTO && opcode != JSR)
 					frameFill.accept(jin.getNext());
 			} else if (instruction instanceof TableSwitchInsnNode tswitch) {
-				frameFill.accept(tswitch.dflt);
-				tswitch.labels.forEach(frameFill);
+				targetFill.accept(tswitch.dflt);
+				tswitch.labels.forEach(targetFill);
 			} else if (instruction instanceof LookupSwitchInsnNode lswitch) {
-				frameFill.accept(lswitch.dflt);
-				lswitch.labels.forEach(frameFill);
+				targetFill.accept(lswitch.dflt);
+				lswitch.labels.forEach(targetFill);
 			}
+		}
+	}
+
+	private static boolean canBeReachedByFallthrough(AbstractInsnNode target) {
+		AbstractInsnNode previous = target.getPrevious();
+		while (previous != null && previous.getOpcode() < 0)
+			previous = previous.getPrevious();
+		if (previous == null)
+			return true;
+		switch (previous.getOpcode()) {
+			case GOTO:
+			case ATHROW:
+			case IRETURN:
+			case LRETURN:
+			case FRETURN:
+			case DRETURN:
+			case ARETURN:
+			case RETURN:
+			case TABLESWITCH:
+			case LOOKUPSWITCH:
+				return false;
+			default:
+				return true;
 		}
 	}
 

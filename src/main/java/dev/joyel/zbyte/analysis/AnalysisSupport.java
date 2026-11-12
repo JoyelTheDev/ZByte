@@ -1,6 +1,6 @@
 package dev.joyel.zbyte.analysis;
 
-import dev.joyel.zbyte.analysis.lookup.NoopLookups;
+import dev.joyel.zbyte.analysis.lookup.BasicLookups;
 import dev.joyel.zbyte.analysis.value.ReValue;
 import dev.joyel.zbyte.transformers.universal.DeadCodeRemovingTransformer;
 import org.objectweb.asm.Type;
@@ -23,9 +23,9 @@ public final class AnalysisSupport {
 
     public ReInterpreter newInterpreter() {
         ReInterpreter interpreter = new ReInterpreter(hierarchy);
-        interpreter.setGetStaticLookup(NoopLookups.GET_STATIC);
-        interpreter.setInvokeStaticLookup(NoopLookups.INVOKE_STATIC);
-        interpreter.setInvokeVirtualLookup(NoopLookups.INVOKE_VIRTUAL);
+        interpreter.setGetStaticLookup(new BasicLookups.GetStatic());
+        interpreter.setInvokeStaticLookup(new BasicLookups.InvokeStatic());
+        interpreter.setInvokeVirtualLookup(new BasicLookups.InvokeVirtual());
         return interpreter;
     }
 
