@@ -1,7 +1,7 @@
 package dev.joyel.zbyte.transformers.universal;
 
-import dev.joyel.zbyte.analysis.ClassMapTypeHierarchy;
-import dev.joyel.zbyte.analysis.TypeHierarchy;
+import dev.joyel.zbyte.reanalysis.ClassMapTypeHierarchy;
+import dev.joyel.zbyte.reanalysis.TypeHierarchy;
 import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.transformers.Transformer;
 import org.objectweb.asm.Handle;

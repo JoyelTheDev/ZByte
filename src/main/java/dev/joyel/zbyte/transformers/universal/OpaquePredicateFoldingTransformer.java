@@ -4,8 +4,8 @@ import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.transformers.Transformer;
 import java.util.*;
 
-import dev.joyel.zbyte.analysis.*;
-import dev.joyel.zbyte.analysis.value.*;
+import dev.joyel.zbyte.reanalysis.*;
+import dev.joyel.zbyte.reanalysis.value.*;
 import dev.joyel.zbyte.utils.AsmFlowUtil;
 import java.util.Collections;
 import java.util.Set;

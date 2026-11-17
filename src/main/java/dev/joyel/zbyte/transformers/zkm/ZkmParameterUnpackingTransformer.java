@@ -1,9 +1,9 @@
 package dev.joyel.zbyte.transformers.zkm;
 
-import dev.joyel.zbyte.analysis.AnalysisSupport;
-import dev.joyel.zbyte.analysis.TypeHierarchy;
-import dev.joyel.zbyte.analysis.value.*;
-import dev.joyel.zbyte.analysis.value.impl.ObjectValueBoxImpl;
+import dev.joyel.zbyte.reanalysis.AnalysisSupport;
+import dev.joyel.zbyte.reanalysis.TypeHierarchy;
+import dev.joyel.zbyte.reanalysis.value.*;
+import dev.joyel.zbyte.reanalysis.value.impl.ObjectValueBoxImpl;
 import dev.joyel.zbyte.transformers.universal.UniversalSupport;
 import org.objectweb.asm.tree.analysis.Analyzer;
 import org.objectweb.asm.tree.analysis.AnalyzerException;

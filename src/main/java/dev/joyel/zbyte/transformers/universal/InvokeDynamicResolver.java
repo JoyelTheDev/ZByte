@@ -1,6 +1,6 @@
 package dev.joyel.zbyte.transformers.universal;
 
-import dev.joyel.zbyte.analysis.value.ReValue;
+import dev.joyel.zbyte.reanalysis.value.ReValue;
 import org.objectweb.asm.Handle;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InvokeDynamicInsnNode;

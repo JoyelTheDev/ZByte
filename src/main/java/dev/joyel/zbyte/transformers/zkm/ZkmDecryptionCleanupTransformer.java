@@ -1,7 +1,7 @@
 package dev.joyel.zbyte.transformers.zkm;
 
-import dev.joyel.zbyte.analysis.AnalysisSupport;
-import dev.joyel.zbyte.analysis.value.ReValue;
+import dev.joyel.zbyte.reanalysis.AnalysisSupport;
+import dev.joyel.zbyte.reanalysis.value.ReValue;
 import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.transformers.Transformer;
 import dev.joyel.zbyte.transformers.universal.StaticValueCollectionTransformer;

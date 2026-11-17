@@ -1,8 +1,8 @@
 package dev.joyel.zbyte.transformers.universal;
 
-import dev.joyel.zbyte.analysis.AnalysisSupport;
-import dev.joyel.zbyte.analysis.ClassEvaluator;
-import dev.joyel.zbyte.analysis.TypeHierarchy;
+import dev.joyel.zbyte.reanalysis.AnalysisSupport;
+import dev.joyel.zbyte.reanalysis.ClassEvaluator;
+import dev.joyel.zbyte.reanalysis.TypeHierarchy;
 import org.objectweb.asm.tree.ClassNode;
 
 import java.util.HashMap;

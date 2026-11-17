@@ -1,16 +1,16 @@
 package dev.joyel.zbyte.transformers.universal;
 
-import dev.joyel.zbyte.analysis.AnalysisSupport;
-import dev.joyel.zbyte.analysis.ClassEvaluator;
-import dev.joyel.zbyte.analysis.ReAnalyzer;
-import dev.joyel.zbyte.analysis.ReInterpreter;
-import dev.joyel.zbyte.analysis.lookup.GetStaticLookup;
-import dev.joyel.zbyte.analysis.value.DoubleValue;
-import dev.joyel.zbyte.analysis.value.FloatValue;
-import dev.joyel.zbyte.analysis.value.IntValue;
-import dev.joyel.zbyte.analysis.value.LongValue;
-import dev.joyel.zbyte.analysis.value.ReValue;
-import dev.joyel.zbyte.analysis.value.StringValue;
+import dev.joyel.zbyte.reanalysis.AnalysisSupport;
+import dev.joyel.zbyte.reanalysis.ClassEvaluator;
+import dev.joyel.zbyte.reanalysis.ReAnalyzer;
+import dev.joyel.zbyte.reanalysis.ReInterpreter;
+import dev.joyel.zbyte.reanalysis.lookup.GetStaticLookup;
+import dev.joyel.zbyte.reanalysis.value.DoubleValue;
+import dev.joyel.zbyte.reanalysis.value.FloatValue;
+import dev.joyel.zbyte.reanalysis.value.IntValue;
+import dev.joyel.zbyte.reanalysis.value.LongValue;
+import dev.joyel.zbyte.reanalysis.value.ReValue;
+import dev.joyel.zbyte.reanalysis.value.StringValue;
 import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.transformers.Transformer;
 import org.objectweb.asm.Opcodes;

@@ -1,0 +1,150 @@
+package dev.joyel.zbyte.reanalysis.value;
+
+import org.objectweb.asm.Type;
+import dev.joyel.zbyte.reanalysis.value.impl.DoubleValueImpl;
+
+import java.util.OptionalDouble;
+
+public non-sealed interface DoubleValue extends ReValue {
+	DoubleValue UNKNOWN = new DoubleValueImpl();
+	DoubleValue VAL_MAX = new DoubleValueImpl(Double.MAX_VALUE);
+	DoubleValue VAL_MIN = new DoubleValueImpl(Double.MIN_VALUE);
+	DoubleValue VAL_M1 = new DoubleValueImpl(-1);
+	DoubleValue VAL_0 = new DoubleValueImpl(0);
+	DoubleValue VAL_1 = new DoubleValueImpl(1);
+
+	static DoubleValue of(double value) {
+		if (value == 0) return VAL_0;
+		else if (value == 1) return VAL_1;
+		else if (value == -1) return VAL_M1;
+		else if (value == Double.MAX_VALUE) return VAL_MAX;
+		else if (value == Double.MIN_VALUE) return VAL_MIN;
+		return new DoubleValueImpl(value);
+	}
+
+	OptionalDouble value();
+
+	@Override
+	default boolean hasKnownValue() {
+		return value().isPresent();
+	}
+
+	@Override
+	default Type type() {
+		return Type.DOUBLE_TYPE;
+	}
+
+	@Override
+	default int getSize() {
+		return 2;
+	}
+
+	default boolean isEqualTo(double value) {
+		return value().isPresent() && value().getAsDouble() == value;
+	}
+
+	default boolean isLessThan(double value) {
+		return value().isPresent() && value().getAsDouble() < value;
+	}
+
+	default boolean isLessThanOrEqual(double value) {
+		return value().isPresent() && value().getAsDouble() <= value;
+	}
+
+	default boolean isGreaterThan(double value) {
+		return value().isPresent() && value().getAsDouble() > value;
+	}
+
+	default boolean isGreaterThanOrEqual(double value) {
+		return value().isPresent() && value().getAsDouble() >= value;
+	}
+
+	default DoubleValue add(DoubleValue other) {
+		OptionalDouble value = value();
+		OptionalDouble otherValue = other.value();
+		if (value.isPresent() && otherValue.isPresent()) return of(value.getAsDouble() + otherValue.getAsDouble());
+		return UNKNOWN;
+	}
+
+	default DoubleValue sub(DoubleValue other) {
+		OptionalDouble value = value();
+		OptionalDouble otherValue = other.value();
+		if (value.isPresent() && otherValue.isPresent()) return of(value.getAsDouble() - otherValue.getAsDouble());
+		return UNKNOWN;
+	}
+
+	default DoubleValue mul(DoubleValue other) {
+		OptionalDouble value = value();
+		OptionalDouble otherValue = other.value();
+		if (value.isPresent() && otherValue.isPresent()) return of(value.getAsDouble() * otherValue.getAsDouble());
+		if (isEqualTo(0) || other.isEqualTo(0)) return VAL_0;
+		return UNKNOWN;
+	}
+
+	default DoubleValue div(DoubleValue other) {
+		OptionalDouble value = value();
+		OptionalDouble otherValue = other.value();
+		if (value.isPresent() && otherValue.isPresent()) {
+			double otherLiteral = otherValue.getAsDouble();
+			if (otherLiteral == 0) return UNKNOWN;
+			return of((value.getAsDouble() / otherLiteral));
+		}
+		return UNKNOWN;
+	}
+
+	default IntValue cmpg(DoubleValue other) {
+		OptionalDouble value = value();
+		OptionalDouble otherValue = other.value();
+		if (value.isPresent() && otherValue.isPresent()) {
+			double f1 = value.getAsDouble();
+			double f2 = otherValue.getAsDouble();
+			if (Double.isNaN(f1) || Double.isNaN(f2)) return IntValue.VAL_1;
+			return IntValue.of(Double.compare(f1, f2));
+		}
+		return IntValue.UNKNOWN;
+	}
+
+	default IntValue cmpl(DoubleValue other) {
+		OptionalDouble value = value();
+		OptionalDouble otherValue = other.value();
+		if (value.isPresent() && otherValue.isPresent()) {
+			double f1 = value.getAsDouble();
+			double f2 = otherValue.getAsDouble();
+			if (Double.isNaN(f1) || Double.isNaN(f2)) return IntValue.VAL_M1;
+			return IntValue.of(Double.compare(f1, f2));
+		}
+		return IntValue.UNKNOWN;
+	}
+
+	default DoubleValue rem(DoubleValue other) {
+		OptionalDouble value = value();
+		OptionalDouble otherValue = other.value();
+		if (value.isPresent() && otherValue.isPresent())
+			return of((float) (value.getAsDouble() % otherValue.getAsDouble()));
+		return UNKNOWN;
+	}
+
+	default DoubleValue negate() {
+		OptionalDouble value = value();
+		if (value.isPresent()) return of(-value.getAsDouble());
+		return UNKNOWN;
+	}
+
+	default IntValue castInt() {
+		OptionalDouble value = value();
+		if (value.isPresent()) return IntValue.of((int) value.getAsDouble());
+		return IntValue.UNKNOWN;
+	}
+
+	default FloatValue castFloat() {
+		OptionalDouble value = value();
+		if (value.isPresent()) return FloatValue.of((float) value.getAsDouble());
+		return FloatValue.UNKNOWN;
+	}
+
+	default LongValue castLong() {
+		OptionalDouble value = value();
+		if (value.isPresent()) return LongValue.of((long) value.getAsDouble());
+		return LongValue.UNKNOWN;
+	}
+}

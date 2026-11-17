@@ -4,12 +4,12 @@ import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.transformers.Transformer;
 import java.util.*;
 
-import dev.joyel.zbyte.analysis.AnalysisSupport;
-import dev.joyel.zbyte.analysis.ReFrame;
-import dev.joyel.zbyte.analysis.TransformationException;
-import dev.joyel.zbyte.analysis.Types;
-import dev.joyel.zbyte.analysis.lookup.*;
-import dev.joyel.zbyte.analysis.value.*;
+import dev.joyel.zbyte.reanalysis.AnalysisSupport;
+import dev.joyel.zbyte.reanalysis.ReFrame;
+import dev.joyel.zbyte.reanalysis.TransformationException;
+import dev.joyel.zbyte.reanalysis.Types;
+import dev.joyel.zbyte.reanalysis.lookup.*;
+import dev.joyel.zbyte.reanalysis.value.*;
 import dev.joyel.zbyte.utils.AsmFlowUtil;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

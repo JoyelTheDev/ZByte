@@ -1,10 +1,10 @@
 package dev.joyel.zbyte.transformers.zkm;
 
-import dev.joyel.zbyte.analysis.ClassEvaluator;
-import dev.joyel.zbyte.analysis.value.ReValue;
-import dev.joyel.zbyte.analysis.value.LongValue;
-import dev.joyel.zbyte.analysis.value.IntValue;
-import dev.joyel.zbyte.analysis.value.StringValue;
+import dev.joyel.zbyte.reanalysis.ClassEvaluator;
+import dev.joyel.zbyte.reanalysis.value.ReValue;
+import dev.joyel.zbyte.reanalysis.value.LongValue;
+import dev.joyel.zbyte.reanalysis.value.IntValue;
+import dev.joyel.zbyte.reanalysis.value.StringValue;
 import dev.joyel.zbyte.transformers.universal.IndyContext;
 import dev.joyel.zbyte.transformers.universal.InvokeDynamicResolver;
 import org.objectweb.asm.Handle;

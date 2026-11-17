@@ -1,6 +1,6 @@
 package dev.joyel.zbyte.transformers.universal;
 
-import dev.joyel.zbyte.analysis.value.ReValue;
+import dev.joyel.zbyte.reanalysis.value.ReValue;
 import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.transformers.Transformer;
 import org.objectweb.asm.Handle;

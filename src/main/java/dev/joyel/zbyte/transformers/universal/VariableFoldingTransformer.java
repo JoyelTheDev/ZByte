@@ -4,11 +4,11 @@ import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.transformers.Transformer;
 import java.util.*;
 
-import dev.joyel.zbyte.analysis.AnalysisSupport;
-import dev.joyel.zbyte.analysis.TransformationException;
-import dev.joyel.zbyte.analysis.Types;
+import dev.joyel.zbyte.reanalysis.AnalysisSupport;
+import dev.joyel.zbyte.reanalysis.TransformationException;
+import dev.joyel.zbyte.reanalysis.Types;
 import dev.joyel.zbyte.utils.collections.Int2ObjectMap;
-import dev.joyel.zbyte.analysis.value.ReValue;
+import dev.joyel.zbyte.reanalysis.value.ReValue;
 import dev.joyel.zbyte.utils.AsmFlowUtil;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
