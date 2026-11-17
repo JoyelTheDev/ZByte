@@ -1,0 +1,18 @@
+ZByte
+Copyright 2026 Joyel
+
+This product includes software derived from java-deobfuscator
+(https://github.com/java-deobfuscator/deobfuscator),
+Copyright 2016-2018 Sam Sun (samczsun) and contributors,
+licensed under the Apache License, Version 2.0.
+
+Modifications from the original work include: package rename from
+com.javadeobfuscator.deobfuscator to dev.joyel.zbyte; removal of the Stringer,
+AntiReleak, ClassGuard, SkidSuite2 and Smoke transformers and detection rules;
+a new analysis framework and universal transformer set; Zelix KlassMaster
+invokedynamic support; an emulator sandbox; resource remapping in normalizers;
+and an updated build targeting Java 25.
+
+This product depends on third-party libraries under their own licenses,
+including ASM, CAFED00D, JavaVM, Guava, Gson, Jackson, SnakeYAML, SLF4J,
+Apache Commons CLI and Apache Commons IO.

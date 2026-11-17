@@ -10,7 +10,10 @@ sandbox:
   deny: []
 
 transformers:
-  - stringer.StringEncryptionTransformer
-  - normalizer.ClassNormalizer: {}
-    normalizer.FieldNormalizer: {}
-    normalizer.MethodNormalizer: {}
+  - universal.UniversalFlowTransformer
+  - universal.StringBuilderTransformer
+  - universal.DeadCodeRemovingTransformer
+  - general.peephole.PeepholeOptimizer
+  - normalizer.ClassNormalizer
+  - normalizer.FieldNormalizer
+  - normalizer.MethodNormalizer

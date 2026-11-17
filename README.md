@@ -1,75 +1,72 @@
 # ZByte
- 
-This project aims to deobfuscate most commercially-available obfuscators for Java.
 
-## Updates
-To download an updated version of ZByte, go to the releases tab.
+A Java bytecode deobfuscator. Give it an obfuscated jar and a list of transformers, and it writes a cleaner jar you can read in a decompiler.
 
-If you would like to run this program with a GUI, go to https://github.com/java-deobfuscator/deobfuscator-gui and grab a download. Put the deobfuscator-gui.jar in the same folder as deobfuscator.jar.
+ZByte started as a fork of [java-deobfuscator](https://github.com/java-deobfuscator/deobfuscator) by Sam Sun, which is no longer maintained.
 
-## Quick Start
+## What it can do
 
-* [Download](https://github.com/java-deobfuscator/deobfuscator/releases) the deobfuscator. The latest build is recommended.
-* If you know what obfuscators were used, skip the next two steps
-* Create `detect.yml` with the following contents. Replace `input.jar` with the name of the input
+- Detect which obfuscation a jar uses and suggest transformers (`detect: true`)
+- Decrypt strings by running the obfuscator's own code in an emulator
+- Clean up control flow, constants, reflection and junk code in any jar
+- Handle Zelix KlassMaster (including ZKM 26 `invokedynamic`), DashO and Allatori
+- Rename classes, fields and methods to readable names
+
+Not supported (removed from the original): Stringer, AntiReleak, ClassGuard, SkidSuite2, Smoke.
+
+## Quick start
+
+You need JDK 25.
+
+```bash
+git clone https://github.com/OWNER/ZByte.git
+cd ZByte
+mvn clean package -DskipTests
+```
+
+The jar ends up in `target/zbyte-1.0.0.jar`.
+
+Find out what the jar uses. Put this in `detect.yml`:
+
 ```yaml
 input: input.jar
 detect: true
 ```
-* Run `java -jar deobfuscator.jar --config detect.yml` to determine the obfuscators used
-* Create `config.yml` with the following contents. Replace `input.jar` with the name of the input
+
+```bash
+java -jar zbyte.jar --config detect.yml
+```
+
+Then write a `config.yml` using the transformers it suggests:
+
 ```yaml
 input: input.jar
 output: output.jar
 transformers:
-  - [fully-qualified-name-of-transformer]
-  - [fully-qualified-name-of-transformer]
-  - [fully-qualified-name-of-transformer]
-  - ... etc
-``` 
-* Run `java -jar deobfuscator.jar`
-* Re-run the detection if the JAR was not fully deobfuscated - it's possible to layer obfuscations
+  - universal.UniversalFlowTransformer
+  - universal.StringBuilderTransformer
+  - normalizer.ClassNormalizer
+```
 
-Take a look at [USAGE.md](USAGE.md) or [wiki](https://github.com/java-deobfuscator/deobfuscator/wiki) for more information.
+```bash
+java  -jar zbyte.jar --config config.yml
+```
 
-## It didn't work
+If the result is still obfuscated, run detection on `output.jar` and go again. Undo layers in the reverse order they were applied.
 
-If you're trying to recover the names of classes or methods, tough luck. That information is typically stripped out and there's no way to recover it.
+## Docs
 
-If you are using one of our transformers, check out the [commonerrors](commonerrors) folder to check for tips.
+- [Usage](docs/usage.md): options, ordering, library use
+- [Transformers](docs/transformers.md): what's available
+- [Sandbox](docs/sandbox.md): limits on emulated code
+- [Troubleshooting](docs/troubleshooting.md)
 
-Otherwise, check out [this guide](CUSTOMTRANSFORMER.md) on how to implement your own transformer (also, open a issue/PR so I can add support for it)
+## Safety
 
-## Supported Obfuscators
+ZByte runs code from the jar you give it. The [sandbox](docs/sandbox.md) blocks dangerous calls in most cases, but it isn't a security boundary. Use a disposable VM or container for untrusted samples.
 
-* [Zelix Klassmaster](http://www.zelix.com/)  
-* [Stringer](https://jfxstore.com/stringer/)  
-* [Allatori](http://www.allatori.com/)  
-* [DashO](https://www.preemptive.com/products/dasho/overview)  
-* [DexGuard](https://www.guardsquare.com/dexguard)    
-* [ClassGuard](https://www.zenofx.com/classguard/)  
-* Smoke (dead, website archive [here](https://web.archive.org/web/20170918112921/https://newtownia.net/smoke/))   
-* SkidSuite2 (dead, archive [here](https://github.com/GenericException/SkidSuite/tree/master/archive/skidsuite-2))
+Only analyse software you have the right to analyse.
 
-## List of Transformers
+## License
 
-The automagic detection should be able to recommend the transformers you'll need to use. However, it may not be up to date. If you're familiar with Java reverse engineering, feel free to [take a look around](src/main/java/com/javadeobfuscator/deobfuscator/transformers) and use what you need. 
-
-## FAQs
-
-#### I got an error that says "Could not locate a class file"
-You need to specify all the JARs that the input file references. You'll almost always need to add `rt.jar`
-(which contains all the classes used by the Java Runtime)
-
-#### I got an error that says "A StackOverflowError occurred during deobfuscation"
-Increase your stack size. For example, `java -Xss128m -jar deobfuscator.jar`
-
-#### Does this work on Android apps?
-Technically, yes, you could use something like [dex2jar](https://github.com/pxb1988/dex2jar)
-or [enjarify](https://github.com/storyyeller/enjarify). However, dex -> jar conversion is lossy at best.
-Try [simplify](https://github.com/CalebFenton/simplify) or [dex-oracle](https://github.com/CalebFenton/dex-oracle) first.
-They were written specifically for Android apps.
-
-## Licensing
-
-ZByte is licensed under the Apache 2.0 license.
+Apache 2.0. Parts come from java-deobfuscator (also Apache 2.0); its copyright notices are kept. See [NOTICE](NOTICE).
