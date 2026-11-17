@@ -1,4 +1,4 @@
-input: input.jar
+input: testjar.jar
 output: output.jar
 
 sandbox:
