@@ -1,6 +1,7 @@
 package dev.joyel.zbyte.executor;
 
 import dev.joyel.zbyte.asm.ConstantPool;
+import dev.joyel.zbyte.executor.insn.InsnDispatcher;
 import dev.joyel.zbyte.executor.providers.Provider;
 import dev.joyel.zbyte.executor.sandbox.SandboxPolicy;
 import dev.joyel.zbyte.executor.sandbox.SandboxedProvider;
@@ -22,6 +23,7 @@ public class Context { //FIXME clinit classes
     public Map<AbstractInsnNode, BiFunction<List<JavaValue>, Context, JavaValue>> customMethodFunc = new HashMap<>();
     public ThreadStore threadStore = new ThreadStore();
     public Monitor monitor = new Monitor();
+    public InsnDispatcher dispatcher = InsnDispatcher.withDefaults();
 
     public Set<String> clinit = Collections.synchronizedSet(new HashSet<>());
 
@@ -41,6 +43,7 @@ public class Context { //FIXME clinit classes
         threadContext.customMethodFunc = customMethodFunc;
         threadContext.threadStore = threadStore;
         threadContext.monitor = monitor;
+        threadContext.dispatcher = dispatcher;
         threadContext.clinit = clinit;
         threadContext.file = file;
         threadContext.meter = meter;

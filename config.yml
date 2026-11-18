@@ -4,7 +4,7 @@ output: output.jar
 sandbox:
   enabled: true
   logOnly: false
-  maxInstructions: 500000000
+  maxInstructions: 500000000 # can be more
   timeoutMillis: 60000
   allow: []
   deny: []
