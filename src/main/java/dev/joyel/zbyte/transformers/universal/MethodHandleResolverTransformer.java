@@ -37,7 +37,10 @@ public class MethodHandleResolverTransformer extends ReflectionResolverTransform
     private static final String FIND_FIELD_DESC = "(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/invoke/MethodHandle;";
 
     private enum Kind {
-        STATIC, VIRTUAL, CONSTRUCTOR, GETTER, STATIC_GETTER, SETTER, STATIC_SETTER
+        STATIC, VIRTUAL, 
+        CONSTRUCTOR, GETTER, 
+        STATIC_GETTER, SETTER, 
+        STATIC_SETTER
     }
 
     private static final class Target {

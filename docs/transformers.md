@@ -26,6 +26,7 @@ Work on any jar. Run `detect: true` to see which apply.
 **Reflection and indy**
 
 - `ReflectionResolverTransformer`, `ReflectionResolverWidenTransformer`: `widenAccess` [false]
+- `MethodHandleResolverTransformer`
 - `ClassForNameTransformer`: removes unused `Class.forName` calls. `classNames` [`java.lang.Integer`], `*` for all
 - `InvokeDynamicInliningTransformer`: `maxSteps` [20000]
 
