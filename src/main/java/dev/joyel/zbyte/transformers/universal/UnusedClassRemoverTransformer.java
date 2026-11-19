@@ -7,6 +7,9 @@ import org.objectweb.asm.Handle;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 @TransformerConfig.ConfigOptions(configClass = UnusedClassRemoverTransformer.Config.class)
 public class UnusedClassRemoverTransformer extends Transformer<UnusedClassRemoverTransformer.Config> {
@@ -24,6 +29,38 @@ public class UnusedClassRemoverTransformer extends Transformer<UnusedClassRemove
             "java/lang/Object", "java/lang/Enum", 
             "java/lang/Record", "java/io/Serializable", 
             "java/lang/Cloneable"));
+
+    private static final String[] MANIFEST_CLASS_KEYS = {"Main-Class", "Premain-Class", "Agent-Class", "Launcher-Agent-Class"};
+
+    private final Set<String> resourceRoots = new HashSet<>();
+
+    private void readResourceRoots() {
+        resourceRoots.clear();
+        for (Map.Entry<String, byte[]> entry : getDeobfuscator().getInputPassthrough().entrySet()) {
+            String name = entry.getKey();
+            if (name.equalsIgnoreCase("META-INF/MANIFEST.MF")) {
+                try {
+                    Attributes attributes = new Manifest(new ByteArrayInputStream(entry.getValue())).getMainAttributes();
+                    for (String key : MANIFEST_CLASS_KEYS) {
+                        String value = attributes.getValue(key);
+                        if (value != null) {
+                            resourceRoots.add(value.trim().replace('.', '/'));
+                        }
+                    }
+                } catch (IOException ignored) {
+                    continue;
+                }
+            } else if (name.startsWith("META-INF/services/") && name.length() > "META-INF/services/".length()) {
+                for (String line : new String(entry.getValue(), StandardCharsets.UTF_8).split("\\R")) {
+                    int hash = line.indexOf('#');
+                    String provider = (hash == -1 ? line : line.substring(0, hash)).trim();
+                    if (!provider.isEmpty()) {
+                        resourceRoots.add(provider.replace('.', '/'));
+                    }
+                }
+            }
+        }
+    }
 
     private Config settings() {
         Config config = getConfig();
@@ -37,6 +74,7 @@ public class UnusedClassRemoverTransformer extends Transformer<UnusedClassRemove
         for (ClassNode node : classNodes()) {
             inputs.put(node.name, node);
         }
+        readResourceRoots();
         Set<String> reachable = new HashSet<>();
         Deque<String> work = new ArrayDeque<>();
         for (ClassNode node : inputs.values()) {
@@ -45,7 +83,7 @@ public class UnusedClassRemoverTransformer extends Transformer<UnusedClassRemove
             }
         }
         if (work.isEmpty()) {
-            logger.warn("No entry points found (main method, framework classes or configured roots); keeping every class");
+            logger.warn("No entry points found (manifest or service entries, main method, framework classes or configured roots); keeping every class");
             return false;
         }
         while (!work.isEmpty()) {
@@ -89,6 +127,9 @@ public class UnusedClassRemoverTransformer extends Transformer<UnusedClassRemove
     }
 
     private boolean isRoot(ClassNode node, Map<String, ClassNode> inputs, Config config) {
+        if (resourceRoots.contains(node.name)) {
+            return true;
+        }
         for (String root : config.getRoots()) {
             if (root.endsWith("/") ? node.name.startsWith(root) : node.name.equals(root)) {
                 return true;

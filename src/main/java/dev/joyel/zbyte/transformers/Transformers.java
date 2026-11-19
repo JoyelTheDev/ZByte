@@ -51,7 +51,6 @@ public class Transformers {
         public static final Class<? extends Transformer> METHOD_NORMALIZER = dev.joyel.zbyte.transformers.normalizer.MethodNormalizer.class;
         public static final Class<? extends Transformer> SOURCEFILE_CLASS_NORMALIZER = SourceFileClassNormalizer.class;
         public static final Class<? extends Transformer> DUPLICATE_RENAMER = dev.joyel.zbyte.transformers.normalizer.DuplicateRenamer.class;
-        public static final Class<? extends Transformer> SMART_RENAMER = dev.joyel.zbyte.transformers.normalizer.SmartRenamer.class;
     }
 
     public static class Universal {
@@ -85,6 +84,7 @@ public class Transformers {
         public static final Class<? extends Transformer> UNUSED_METHOD_REMOVER = dev.joyel.zbyte.transformers.universal.UnusedMethodRemoverTransformer.class;
         public static final Class<? extends Transformer> UNUSED_FIELD_REMOVER = dev.joyel.zbyte.transformers.universal.UnusedFieldRemoverTransformer.class;
         public static final Class<? extends Transformer> UNUSED_CLASS_REMOVER = dev.joyel.zbyte.transformers.universal.UnusedClassRemoverTransformer.class;
+        public static final Class<? extends Transformer> RESOURCE_DECRYPTION = dev.joyel.zbyte.transformers.universal.ResourceDecryptionTransformer.class;
         public static final Class<? extends Transformer> ENUM_NAME_RESTORATION = dev.joyel.zbyte.transformers.universal.EnumNameRestorationTransformer.class;
         public static final Class<? extends Transformer> OPAQUE_CONSTANT_FOLDING = dev.joyel.zbyte.transformers.universal.OpaqueConstantFoldingTransformer.class;
         public static final Class<? extends Transformer> OPAQUE_PREDICATE_FOLDING = dev.joyel.zbyte.transformers.universal.OpaquePredicateFoldingTransformer.class;
