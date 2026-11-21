@@ -48,7 +48,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
   private static final String LOOKUP_FIELD_DESC = "(Ljava/lang/String;)Ljava/lang/reflect/Field;";
 
   private final Map<String, ClassNode> jdkClasses = new HashMap<>();
-  private InsnList currentList;
+  protected InsnList currentList;
   private final Set<AbstractInsnNode> moved = new HashSet<>();
 
     private void run() {
@@ -473,7 +473,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     return lookup;
   }
 
-  private Type[] parseClassArray(Slice slice) {
+  protected Type[] parseClassArray(Slice slice) {
     List<AbstractInsnNode> insns = slice.insns;
     if (insns.size() == 1 && insns.get(0).getOpcode() == ACONST_NULL) {
       return new Type[0];
@@ -550,7 +550,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     return values;
   }
 
-  private Type classConstant(AbstractInsnNode node) {
+  protected Type classConstant(AbstractInsnNode node) {
     if (node == null) {
       return null;
     }
@@ -592,14 +592,14 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     return null;
   }
 
-  private static String stringConst(AbstractInsnNode node) {
+  protected static String stringConst(AbstractInsnNode node) {
     if (node != null && node.getOpcode() == LDC && ((LdcInsnNode) node).cst instanceof String) {
       return (String) ((LdcInsnNode) node).cst;
     }
     return null;
   }
 
-  private static AbstractInsnNode single(Slice slice) {
+  protected static AbstractInsnNode single(Slice slice) {
     return slice.insns.size() == 1 ? slice.insns.get(0) : null;
   }
 
@@ -622,7 +622,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     return (Integer) ((LdcInsnNode) node).cst;
   }
 
-  private ClassNode lookupClass(String name) {
+  protected ClassNode lookupClass(String name) {
     ClassNode node = classes.get(name);
     if (node != null) {
       return node;
@@ -655,7 +655,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     return true;
   }
 
-  private Found findMethod(String ownerName, String name, Type[] params, boolean declaredOnly) {
+  protected Found findMethod(String ownerName, String name, Type[] params, boolean declaredOnly) {
     List<String> queue = new ArrayList<>();
     Set<String> seen = new HashSet<>();
     queue.add(ownerName);
@@ -706,7 +706,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     return null;
   }
 
-  private FieldTarget findField(ClassNode requested, String name, boolean declaredOnly) {
+  protected FieldTarget findField(ClassNode requested, String name, boolean declaredOnly) {
     List<String> queue = new ArrayList<>();
     Set<String> seen = new HashSet<>();
     queue.add(requested.name);
@@ -749,7 +749,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     return null;
   }
 
-  private boolean accessible(ClassNode caller, ClassNode requested, ClassNode memberOwner, int access, Object member) {
+  protected boolean accessible(ClassNode caller, ClassNode requested, ClassNode memberOwner, int access, Object member) {
     if (isAccessible(caller, requested, memberOwner, access)) {
       return true;
     }
@@ -773,7 +773,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     return (access & ~(ACC_PRIVATE | ACC_PROTECTED)) | ACC_PUBLIC;
   }
 
-  private boolean isAccessible(ClassNode caller, ClassNode requested, ClassNode memberOwner, int access) {
+  protected boolean isAccessible(ClassNode caller, ClassNode requested, ClassNode memberOwner, int access) {
     if ((access & ACC_PRIVATE) != 0) {
       return caller.name.equals(memberOwner.name);
     }
@@ -800,11 +800,11 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     return call.getOpcode() == opcode && call.owner.equals(owner) && call.name.equals(name) && call.desc.equals(desc);
   }
 
-  private static boolean detached(InsnList list, AbstractInsnNode node) {
+  protected static boolean detached(InsnList list, AbstractInsnNode node) {
     return node.getPrevious() == null && node.getNext() == null && list.size() > 1;
   }
 
-  private static Set<LabelNode> jumpTargets(MethodNode method) {
+  protected static Set<LabelNode> jumpTargets(MethodNode method) {
     Set<LabelNode> targets = new HashSet<>();
     for (AbstractInsnNode insn : method.instructions) {
       if (insn instanceof JumpInsnNode) {
@@ -829,7 +829,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     return targets;
   }
 
-  private List<Slice> operands(MethodInsnNode call, int count, Set<LabelNode> targets) {
+  protected List<Slice> operands(AbstractInsnNode call, int count, Set<LabelNode> targets) {
     Slice[] slices = new Slice[count];
     AbstractInsnNode cursor = call.getPrevious();
     for (int i = count - 1; i >= 0; i--) {
@@ -961,7 +961,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     }
   }
 
-  private void moveInto(InsnList target, List<AbstractInsnNode> nodes) {
+  protected void moveInto(InsnList target, List<AbstractInsnNode> nodes) {
     for (AbstractInsnNode node : nodes) {
       if (node.getPrevious() != null || node.getNext() != null) {
         currentList.remove(node);
@@ -971,7 +971,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     }
   }
 
-  private List<AbstractInsnNode> range(AbstractInsnNode start, MethodInsnNode last) {
+  protected List<AbstractInsnNode> range(AbstractInsnNode start, MethodInsnNode last) {
     moved.clear();
     List<AbstractInsnNode> nodes = new ArrayList<>();
     for (AbstractInsnNode n = start; n != last; n = n.getNext()) {
@@ -982,7 +982,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     return nodes;
   }
 
-  private void replace(MethodNode method, MethodInsnNode last, List<AbstractInsnNode> range, InsnList replacement) {
+  protected void replace(MethodNode method, MethodInsnNode last, List<AbstractInsnNode> range, InsnList replacement) {
     method.instructions.insertBefore(last, replacement);
     for (AbstractInsnNode n : range) {
       if (!moved.contains(n)) {
@@ -992,7 +992,7 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     method.instructions.remove(last);
   }
 
-  private static class Slice {
+  protected static class Slice {
     AbstractInsnNode start;
     AbstractInsnNode end;
     final List<AbstractInsnNode> insns = new ArrayList<>();
@@ -1003,12 +1003,12 @@ public class ReflectionResolverTransformer extends Transformer<ReflectionResolve
     boolean declared;
   }
 
-  private static class Found {
+  protected static class Found {
     ClassNode owner;
     MethodNode method;
   }
 
-  private static class FieldTarget {
+  protected static class FieldTarget {
     ClassNode requested;
     ClassNode memberOwner;
     FieldNode field;
