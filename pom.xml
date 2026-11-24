@@ -10,6 +10,7 @@
         <version.dude>2.6.7</version.dude>
         <version.ssvm>master-SNAPSHOT</version.ssvm>
         <maven.compiler.release>25</maven.compiler.release>
+        <ssvm.exclude>**/ssvm/**</ssvm.exclude>
     </properties>
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
@@ -34,6 +35,9 @@
                 <version>3.16.0</version>
                 <configuration>
                     <release>25</release>
+                    <excludes>
+                        <exclude>${ssvm.exclude}</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -184,19 +188,29 @@
             <version>12e219644f</version>
         </dependency>
         <dependency>
-            <groupId>com.github.xxDark.SSVM</groupId>
-           <artifactId>ssvm-core</artifactId>
-           <version>${version.ssvm}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.xxDark.SSVM</groupId>
-            <artifactId>ssvm-invoke</artifactId>
-            <version>${version.ssvm}</version>
-        </dependency>
-        <dependency>
             <groupId>software.coley</groupId>
             <artifactId>cafedude-core</artifactId>
             <version>${version.dude}</version>
         </dependency>
     </dependencies>
+    <profiles>
+        <profile>
+            <id>ssvm</id>
+            <properties>
+                <ssvm.exclude>none/**</ssvm.exclude>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>com.github.xxDark.SSVM</groupId>
+                    <artifactId>ssvm-core</artifactId>
+                    <version>${version.ssvm}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.github.xxDark.SSVM</groupId>
+                    <artifactId>ssvm-invoke</artifactId>
+                    <version>${version.ssvm}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
