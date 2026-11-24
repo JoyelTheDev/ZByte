@@ -8,6 +8,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.asm>9.11.1</version.asm>
         <version.dude>2.6.7</version.dude>
+        <version.ssvm>master-SNAPSHOT</version.ssvm>
         <maven.compiler.release>25</maven.compiler.release>
     </properties>
     <build>
@@ -85,7 +86,6 @@
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
-
     <dependencies>
         <dependency>
             <groupId>commons-cli</groupId>
@@ -182,6 +182,16 @@
             <groupId>com.github.java-deobfuscator</groupId>
             <artifactId>javavm</artifactId>
             <version>12e219644f</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.xxDark.SSVM</groupId>
+           <artifactId>ssvm-core</artifactId>
+           <version>${version.ssvm}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.xxDark.SSVM</groupId>
+            <artifactId>ssvm-invoke</artifactId>
+            <version>${version.ssvm}</version>
         </dependency>
         <dependency>
             <groupId>software.coley</groupId>

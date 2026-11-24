@@ -8,6 +8,7 @@ import dev.joyel.zbyte.executor.defined.JVMMethodProvider;
 import dev.joyel.zbyte.executor.defined.MappedFieldProvider;
 import dev.joyel.zbyte.executor.defined.PrimitiveFieldProvider;
 import dev.joyel.zbyte.executor.providers.DelegatingProvider;
+import dev.joyel.zbyte.executor.defined.SsvmSupport;
 import dev.joyel.zbyte.executor.values.*;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -34,6 +35,7 @@ public final class ClassEvaluator {
         provider.register(fields);
         provider.register(new PrimitiveFieldProvider());
         provider.register(new DictionaryMethodProvider(classes));
+        SsvmSupport.register(provider, classes);
     }
 
     public boolean initialize(String owner) {

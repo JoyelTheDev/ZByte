@@ -31,6 +31,7 @@ import dev.joyel.zbyte.executor.defined.JVMMethodProvider;
 import dev.joyel.zbyte.executor.defined.MappedMethodProvider;
 import dev.joyel.zbyte.executor.providers.ComparisonProvider;
 import dev.joyel.zbyte.executor.providers.DelegatingProvider;
+import dev.joyel.zbyte.executor.defined.SsvmSupport;
 import dev.joyel.zbyte.executor.values.JavaValue;
 import dev.joyel.zbyte.transformers.Transformer;
 import dev.joyel.zbyte.utils.InstructionModifier;
@@ -74,6 +75,7 @@ public class StringEncryptionTransformer extends Transformer<StringEncryptionTra
         provider.register(new JVMMethodProvider());
         provider.register(new JVMComparisonProvider());
         provider.register(new MappedMethodProvider(classes));
+        SsvmSupport.register(provider, classes);
         provider.register(new ComparisonProvider() {
             @Override
             public boolean instanceOf(JavaValue target, Type type, Context context) {

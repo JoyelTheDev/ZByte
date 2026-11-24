@@ -26,9 +26,7 @@ public class Context { //FIXME clinit classes
     public InsnDispatcher dispatcher = InsnDispatcher.withDefaults();
 
     public Set<String> clinit = Collections.synchronizedSet(new HashSet<>());
-
     public File file;
-
     public SandboxPolicy.Meter meter;
 
     public Context(Provider provider) {

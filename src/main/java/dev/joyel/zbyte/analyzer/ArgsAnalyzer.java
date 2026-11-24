@@ -657,62 +657,49 @@ public class ArgsAnalyzer
     				result = ain;
     				break;
     			}
-    		}else if(ain.getOpcode() == Opcodes.DUP2_X1)
-    		{
-    			if(stackSize > 3)
-    			{
+    		}else if(ain.getOpcode() == Opcodes.DUP2_X1) {
+    			if(stackSize > 3) {
     				stackSize -= 2;
-        			if(stackSize <= 0 && !forceBreak && !onlyZero)
-            		{
+        			if(stackSize <= 0 && !forceBreak && !onlyZero) {
         				diff = stackSize - prevNeeded;
             			result = ain;
             			break;
             		}
         			stackSize += 4;
-    			}else if(stackSize == 1 || stackSize == 2)
-    			{
+    			}else if(stackSize == 1 || stackSize == 2) {
     				stackSize -= 2;
-    				if(stackSize <= 0 && !forceBreak && !onlyZero)
-    				{
+    				if(stackSize <= 0 && !forceBreak && !onlyZero) {
     					diff = stackSize - prevNeeded;
     					result = ain;
     					break;
     				}
     			}else
     				skippedDups.add(ain);
-    		}else if(ain.getOpcode() == Opcodes.DUP2_X2)
-    		{
-    			if(stackSize > 4)
-    			{
+    		}else if(ain.getOpcode() == Opcodes.DUP2_X2) {
+    			if(stackSize > 4) {
     				stackSize -= 2;
-        			if(stackSize <= 0 && !forceBreak && !onlyZero)
-            		{
+        			if(stackSize <= 0 && !forceBreak && !onlyZero) {
         				diff = stackSize - prevNeeded;
             			result = ain;
             			break;
             		}
         			stackSize += 4;
-    			}else if(stackSize == 1 || stackSize == 2)
-    			{
+    			}else if(stackSize == 1 || stackSize == 2) {
     				stackSize -= 2;
-    				if(stackSize <= 0 && !forceBreak && !onlyZero)
-    				{
+    				if(stackSize <= 0 && !forceBreak && !onlyZero) {
     					diff = stackSize - prevNeeded;
     					result = ain;
     					break;
     				}
     			}else
     				skippedDups.add(ain);
-    		}else if(ain.getOpcode() == Opcodes.SWAP)
-    		{
-    			if(stackSize == 2)
-    			{
+    		}else if(ain.getOpcode() == Opcodes.SWAP) {
+    			if(stackSize == 2) {
     				if(swap != null)
     					return new FailedResult(stackSize - prevNeeded, stackSize, ain, swap, skippedDups);
         			swap = ain;
     				stackSize--;
-    			}else if(stackSize == 1)
-    			{
+    			}else if(stackSize == 1) {
     				if(swap != null)
     					return new FailedResult(stackSize - prevNeeded, stackSize, ain, swap, skippedDups);
         			swap = ain;
