@@ -1,19 +1,3 @@
-/*
- * Copyright 2016 Sam Sun <me@samczsun.com>
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
-
 package dev.joyel.zbyte;
 
 import java.io.File;
@@ -34,6 +18,7 @@ import dev.joyel.zbyte.asm.ConstantPool;
 import dev.joyel.zbyte.config.Configuration;
 import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.exceptions.NoClassInPathException;
+import dev.joyel.zbyte.report.*;
 import dev.joyel.zbyte.executor.sandbox.SandboxPolicy;
 import dev.joyel.zbyte.rules.Rule;
 import dev.joyel.zbyte.rules.Rules;
@@ -83,6 +68,7 @@ public class ZByte {
     private final Map<ClassNode, ClassReader> readers = new HashMap<>();
     public Map<String, byte[]> invalidClasses = new HashMap<>();
     public List<String> junkFiles = new ArrayList<>();
+    private RunReport report;
 
     public ZByte(Configuration configuration) {
         this.configuration = configuration;
@@ -372,6 +358,45 @@ public class ZByte {
     }
 
     public void start() throws Throwable {
+        File target = configuration.getReport();
+        if (target == null) {
+            execute();
+            return;
+        }
+        RunReport run = new RunReport(
+                configuration.isDetect() ? "detect" : "transform",
+                configuration.getInput() == null ? null : configuration.getInput().getPath(),
+                configuration.getOutput() == null ? null : configuration.getOutput().getPath(),
+                configuration.isSmartRedo());
+        if (configuration.getInput() != null && configuration.getInput().isFile()) {
+            run.setInputBytes(configuration.getInput().length());
+        }
+        this.report = run;
+        long started = System.nanoTime();
+        Throwable failure = null;
+        try {
+            execute();
+        } catch (Throwable t) {
+            failure = t;
+            throw t;
+        } finally {
+            long outputBytes = 0L;
+            File output = configuration.getOutput();
+            if (failure == null && !configuration.isDetect() && output != null && output.isFile()) {
+                outputBytes = output.length();
+            }
+            run.complete(failure, (System.nanoTime() - started) / 1_000_000L, SandboxPolicy.active().isEnabled(), SandboxPolicy.violationSummary(), outputBytes);
+            this.report = null;
+            try {
+                File written = ReportWriter.write(run, target);
+                logger.info("Report written to {}", written.getPath());
+            } catch (IOException e) {
+                logger.error("Could not write the report", e);
+            }
+        }
+    }
+
+    private void execute() throws Throwable {
         SandboxPolicy.install(configuration.getSandbox().toPolicy());
 
         logger.info("Loading classpath");
@@ -379,6 +404,10 @@ public class ZByte {
 
         logger.info("Loading input");
         loadInput();
+
+        if (report != null) {
+            report.setInputMetrics(Metrics.of(classes.values()));
+        }
 
         if (getConfig().isDetect()) {
             logger.info("Detecting known obfuscators");
@@ -398,6 +427,15 @@ public class ZByte {
 	                logger.info("(Choose one transformer. If there are multiple, it's recommended to try the transformer listed first)");
 
 	                Collection<Class<? extends Transformer<?>>> recommended = rule.getRecommendTransformers();
+	                if (report != null) {
+	                    List<String> names = new ArrayList<>();
+	                    if (recommended != null) {
+	                        for (Class<? extends Transformer<?>> transformer : recommended) {
+	                            names.add(transformer.getName());
+	                        }
+	                    }
+	                    report.addFinding(new Finding(rule.getClass().getSimpleName(), rule.getDescription(), message, names));
+	                }
 	                if (recommended == null) {
 	                    logger.info("\tNone");
 	                } else {
@@ -439,6 +477,10 @@ public class ZByte {
         }
         SandboxPolicy.logSummary();
 
+        if (report != null) {
+            report.setOutputMetrics(Metrics.of(classes.values()));
+        }
+
         logger.info("Writing");
         if (DEBUG) {
             classes.values().forEach(Utils::printClass);
@@ -475,13 +517,33 @@ public class ZByte {
     public boolean runFromConfig(TransformerConfig config) throws Throwable {
         Transformer<?> transformer = config.getImplementation().newInstance();
         transformer.init(this, config, classes, classpath, readers);
+        RunReport active = report;
+        Metrics before = active == null ? null : Metrics.of(classes.values());
+        long started = System.nanoTime();
+        int passes = 0;
         boolean madeChangesAtLeastOnce = false;
         boolean madeChanges;
-        do {
-            madeChanges = transformer.transform();
-            madeChangesAtLeastOnce = madeChangesAtLeastOnce || madeChanges;
-        } while (madeChanges && getConfig().isSmartRedo());
+        try {
+            do {
+                madeChanges = transformer.transform();
+                passes++;
+                madeChangesAtLeastOnce = madeChangesAtLeastOnce || madeChanges;
+            } while (madeChanges && getConfig().isSmartRedo());
+        } catch (Throwable t) {
+            recordTransformer(active, config, before, started, passes, madeChangesAtLeastOnce, RunReport.describe(t));
+            throw t;
+        }
+        recordTransformer(active, config, before, started, passes, madeChangesAtLeastOnce, null);
         return madeChangesAtLeastOnce;
+    }
+
+    private void recordTransformer(RunReport active, TransformerConfig config, Metrics before, long started, int passes, boolean changed, String error) {
+        if (active == null) {
+            return;
+        }
+        long elapsed = (System.nanoTime() - started) / 1_000_000L;
+        String name = config.getImplementation().getName().replaceFirst("^dev\\.joyel\\.zbyte\\.transformers\\.", "");
+        active.addTransformer(new TransformerRecord(active.getTransformers().size() + 1, name, elapsed, passes, changed, before, Metrics.of(classes.values()), error));
     }
 
     public ClassNode assureLoaded(String ref) {

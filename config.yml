@@ -1,6 +1,8 @@
 input: testjar.jar
 output: output.jar
 
+report: report.json
+
 sandbox:
   enabled: true
   logOnly: false
