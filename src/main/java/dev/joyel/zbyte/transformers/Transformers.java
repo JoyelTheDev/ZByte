@@ -33,6 +33,7 @@ public class Transformers {
             public static final Class<? extends Transformer> LINE_NUMBERS = LineNumberRemover.class;
             public static final Class<? extends Transformer> ILLEGAL_SIGNATURE = IllegalSignatureRemover.class;
             public static final Class<? extends Transformer> SYNTHETIC_BRIDGE = SyntheticBridgeRemover.class;
+            public static final Class<? extends Transformer> ILLEGAL_CLASS_ATTRIBUTE = dev.joyel.zbyte.transformers.general.removers.IllegalClassAttributeRemover.class;
         }
     }
     
@@ -54,6 +55,7 @@ public class Transformers {
     }
 
     public static class Universal {
+        public static final Class<? extends Transformer> ANTI_TAMPER = dev.joyel.zbyte.transformers.universal.AntiTamperTransformer.class;
         public static final Class<? extends Transformer> ACCESS_REPAIR = dev.joyel.zbyte.transformers.universal.AccessRepairTransformer.class;
         public static final Class<? extends Transformer> ANNOTATION_FILTER = dev.joyel.zbyte.transformers.universal.AnnotationFilterTransformer.class;
         public static final Class<? extends Transformer> CLASS_FOR_NAME = dev.joyel.zbyte.transformers.universal.ClassForNameTransformer.class;

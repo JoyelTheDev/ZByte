@@ -69,6 +69,8 @@ public class Rules {
             new RuleDuplicateAnnotations(),
             new RuleLongAnnotations(),
             new RuleLongExceptions(),
+            new RuleAntiTamper(),
+            new RuleIllegalClassAttributes(),
             new RuleDeadCode(),
             new RuleDuplicateCatchBlocks(),
             new RuleGotoChains(),

@@ -5,6 +5,7 @@ import dev.joyel.zbyte.config.TransformerConfig;
 import dev.joyel.zbyte.rules.Rule;
 import dev.joyel.zbyte.transformers.Transformer;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class DryRunRule implements Rule {
 
@@ -75,6 +77,14 @@ public abstract class DryRunRule implements Rule {
         if (before.access != after.access || before.methods.size() != after.methods.size() || before.fields.size() != after.fields.size()) {
             return before.name;
         }
+        if (!Objects.equals(before.sourceDebug, after.sourceDebug)
+                || !Objects.equals(before.outerClass, after.outerClass)
+                || !Objects.equals(before.nestHostClass, after.nestHostClass)
+                || annotations(before.nestMembers) != annotations(after.nestMembers)
+                || annotations(before.permittedSubclasses) != annotations(after.permittedSubclasses)
+                || annotations(before.innerClasses) != annotations(after.innerClasses)) {
+            return before.name;
+        }
         if (annotations(before.visibleAnnotations) != annotations(after.visibleAnnotations)
                 || annotations(before.invisibleAnnotations) != annotations(after.invisibleAnnotations)) {
             return before.name;
@@ -99,6 +109,7 @@ public abstract class DryRunRule implements Rule {
             MethodNode other = methods.get(method.name + method.desc);
             if (other == null || other.access != method.access
                     || other.instructions.size() != method.instructions.size()
+                    || !sameOpcodes(method, other)
                     || other.tryCatchBlocks.size() != method.tryCatchBlocks.size()
                     || annotations(method.visibleAnnotations) != annotations(other.visibleAnnotations)
                     || annotations(method.invisibleAnnotations) != annotations(other.invisibleAnnotations)
@@ -107,6 +118,19 @@ public abstract class DryRunRule implements Rule {
             }
         }
         return null;
+    }
+
+    private static boolean sameOpcodes(MethodNode first, MethodNode second) {
+        AbstractInsnNode a = first.instructions.getFirst();
+        AbstractInsnNode b = second.instructions.getFirst();
+        while (a != null && b != null) {
+            if (a.getOpcode() != b.getOpcode()) {
+                return false;
+            }
+            a = a.getNext();
+            b = b.getNext();
+        }
+        return a == null && b == null;
     }
 
     private static int annotations(List<?> list) {
